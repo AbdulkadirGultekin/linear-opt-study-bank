@@ -467,22 +467,13 @@ st.caption(f"Question {st.session_state.current_index + 1} of {len(questions)}")
 
 # --- The Flashcard ---
 with st.container():
-    # Render the styled container with Badge
-    st.markdown(f"""
-    <div class="question-card">
-        <div class="topic-badge">{current_q.get('topic', 'General')}</div>
-        <div style="font-size: 1.1em; margin-top: 10px;">
-            {current_q["question"]} 
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # NOTE: We render the question INSIDE the HTML div using f-strings above.
-    # This works for simple Markdown. For complex LaTeX that fails to render in HTML, 
-    # we can fallback to printing st.markdown below if needed, but usually Streamlit 
-    # parses markdown inside f-strings well. 
-    # If your LaTeX breaks, uncomment the line below:
-    # st.markdown(current_q["question"])
+    # FIXED: Indentation removed from HTML string to prevent Code Block rendering
+    st.markdown(f"""<div class="question-card">
+<div class="topic-badge">{current_q.get('topic', 'General')}</div>
+<div style="font-size: 1.1em; margin-top: 10px;">
+{current_q["question"]} 
+</div>
+</div>""", unsafe_allow_html=True)
 
 # --- Controls ---
 col1, col2, col3 = st.columns([1, 2, 1])
