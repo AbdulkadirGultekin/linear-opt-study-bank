@@ -354,14 +354,12 @@ def load_questions():
     with open(FILE_NAME, "r") as f:
         try:
             file_questions = json.load(f)
-            # Merge logic: Add new questions from CODE that aren't in FILE
             existing_ids = {q["id"] for q in file_questions}
             new_questions_found = False
             for q in INITIAL_QUESTIONS:
                 if q["id"] not in existing_ids:
                     file_questions.append(q)
                     new_questions_found = True
-            
             if new_questions_found:
                 with open(FILE_NAME, "w") as f_out:
                     json.dump(file_questions, f_out, indent=4)
@@ -372,42 +370,33 @@ def load_questions():
 # --- App Layout ---
 st.set_page_config(page_title="OR Exam Prep", layout="centered", page_icon="🎓")
 
-# --- CSS STYLING (The "Flashcard" Theme) ---
+# --- CSS STYLING (THE "DARK MODE NATIVE" THEME) ---
 st.markdown("""
 <style>
-    /* 1. Global Background: Soft Off-White */
-    .stApp {
-        background-color: #f4f6f9;
-    }
+    /* 1. Reset: We let Streamlit control the main background (Black/Dark Grey) */
     
-    /* 2. Question Card: Physical Paper Look */
+    /* 2. Dark Card Design */
     .question-card {
-        background-color: #ffffff;
+        background-color: #262730; /* Streamlit's Native Dark Grey */
         padding: 40px;
         border-radius: 12px;
-        border: 1px solid #e0e0e0;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        border: 1px solid #4a4a4a; /* Subtle border for definition */
+        box-shadow: 0 4px 6px rgba(0,0,0,0.3); /* Stronger shadow for depth */
         margin-bottom: 25px;
-        transition: transform 0.2s ease;
     }
     
-    /* Hover effect for fun */
-    .question-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 15px rgba(0,0,0,0.08);
-    }
-
-    /* 3. Typography Enforcement (Dark Grey for Readability) */
+    /* 3. Text Contrast Enforcement */
+    /* Force text inside the card to be White/Light Grey */
     .question-card p, .question-card li, .question-card div, .question-card span, h1, h2, h3 {
-        color: #2c3e50 !important;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #FAFAFA !important;
+        font-family: 'Segoe UI', sans-serif;
         line-height: 1.6;
     }
 
-    /* 4. Topic Badge */
+    /* 4. Topic Badge (Cyan/Blue for Cyber look) */
     .topic-badge {
-        background-color: #e3f2fd;
-        color: #1565c0 !important;
+        background-color: #0e1117; /* Very dark contrast */
+        color: #4db8ff !important; /* Bright Cyan text */
         text-transform: uppercase;
         font-size: 0.75rem;
         font-weight: 700;
@@ -416,10 +405,27 @@ st.markdown("""
         border-radius: 20px;
         display: inline-block;
         margin-bottom: 20px;
-        border: 1px solid #bbdefb;
+        border: 1px solid #4db8ff;
     }
 
-    /* 5. Streamlit Button Tweaks */
+    /* 5. Success/Solution Box (Dark Green Theme) */
+    .stSuccess {
+        background-color: #1b2e21 !important; /* Dark Green bg */
+        color: #d4edda !important; /* Light Green text */
+        border: 1px solid #2e5c3b;
+    }
+    .stSuccess p, .stSuccess div {
+        color: #d4edda !important;
+    }
+    
+    /* 6. Streamlit Info Box Override (Make it blend) */
+    .stAlert {
+        background-color: transparent !important;
+        border: none !important;
+        color: #FAFAFA !important;
+    }
+
+    /* 7. Buttons */
     .stButton button {
         border-radius: 8px;
         font-weight: 600;
@@ -430,7 +436,7 @@ st.markdown("""
 
 # --- Header ---
 st.title("🎓 Operations Research Prep")
-st.caption("Comprehensive Exam Review • Dantzig-Wolfe • Sensitivity • Theory")
+st.caption("Comprehensive Exam Review • Dark Mode Edition 🌙")
 
 questions = load_questions()
 
@@ -456,32 +462,27 @@ def toggle_solution():
 current_q = questions[st.session_state.current_index]
 
 # --- Progress Bar ---
-progress_text = f"Question {st.session_state.current_index + 1} of {len(questions)}"
 st.progress((st.session_state.current_index + 1) / len(questions))
-st.caption(progress_text)
+st.caption(f"Question {st.session_state.current_index + 1} of {len(questions)}")
 
 # --- The Flashcard ---
 with st.container():
-    # Use HTML for the styled container + Topic Badge
+    # Render the styled container with Badge
     st.markdown(f"""
     <div class="question-card">
         <div class="topic-badge">{current_q.get('topic', 'General')}</div>
+        <div style="font-size: 1.1em; margin-top: 10px;">
+            {current_q["question"]} 
+        </div>
     </div>
     """, unsafe_allow_html=True)
     
-    # Use standard Streamlit Markdown for the question text.
-    # We place it "outside" the HTML div in code, but visually it aligns
-    # because of the clean layout. To put it *inside* the white box visually,
-    # we rely on the CSS targeting standard elements or we can print it directly.
-    # A cleaner trick is to put the text inside the HTML, but that breaks LaTeX.
-    # So we use a 'info' box which we style to match white, OR just simple markdown.
-    
-    # We will just print the markdown. The CSS above forces the text color.
-    # Note: Visually, to make it look like it's IN the card, we have to be tricky 
-    # with Streamlit. The best robust way is to use `st.info` with custom CSS 
-    # to turn it white.
-    
-    st.info(current_q["question"])
+    # NOTE: We render the question INSIDE the HTML div using f-strings above.
+    # This works for simple Markdown. For complex LaTeX that fails to render in HTML, 
+    # we can fallback to printing st.markdown below if needed, but usually Streamlit 
+    # parses markdown inside f-strings well. 
+    # If your LaTeX breaks, uncomment the line below:
+    # st.markdown(current_q["question"])
 
 # --- Controls ---
 col1, col2, col3 = st.columns([1, 2, 1])
@@ -491,7 +492,6 @@ with col1:
         st.rerun()
 with col2:
     label = "🙈 Hide Solution" if st.session_state.show_solution else "👁️ Reveal Solution"
-    # Use primary color for the main action
     if st.button(label, type="primary", use_container_width=True):
         toggle_solution()
         st.rerun()
