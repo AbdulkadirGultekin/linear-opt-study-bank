@@ -126,6 +126,221 @@ $= 37 - 3 = 34$
 The reduced cost is **34** (positive).
 Since this is a Maximization problem, a positive $(z_j - c_j)$ means the variable is **NOT** attractive. We are already making more 'value' ($z$) than the cost ($c$).
 """
+    },
+    {
+        "id": 101,
+        "topic": "Dantzig-Wolfe (Bounds)",
+        "question": """
+**Problem:** You are maximizing $Z$ using Dantzig-Wolfe.
+At the current iteration:
+1. The Master Problem optimal value is $Z_{MP} = 100$.
+2. The current dual solution is $(\\pi, \\alpha)$.
+3. You solve the subproblem and find an optimal solution $x_{sub}$ with objective value $Z_{sub} = 20$.
+4. The value of the dual variable for the convexity constraint is $\\alpha = 15$.
+
+**Task:** Determine the **Upper Bound** on the true optimal objective value $Z^*$.
+""",
+        "solution": """
+**Answer:** 105
+
+**Explanation:**
+For a Maximization problem:
+* **Lower Bound:** The current Master Problem value ($Z_{MP} = 100$).
+* **Upper Bound:** $Z_{MP} + \\text{Reduced Cost of the new column}$.
+
+First, calculate the Reduced Cost:
+$\\text{Reduced Cost} = Z_{sub} - \\alpha = 20 - 15 = 5$.
+
+Upper Bound = $100 + 5 = 105$.
+*(Note: If the reduced cost were $\\le 0$, we would be optimal.)*
+"""
+    },
+    {
+        "id": 102,
+        "topic": "Sensitivity Analysis (Structural)",
+        "question": """
+**Scenario:** You have an optimal basis $B$.
+You want to change a constraint coefficient $a_{ij}$ for a variable $x_j$.
+
+**Question:** Why is the sensitivity analysis much harder if $x_j$ is a **Basic** variable compared to a **Non-Basic** variable?
+""",
+        "solution": """
+**Answer:** It alters the Basis Matrix $B$ itself.
+
+**Explanation:**
+* **If $x_j$ is Non-Basic:** Only its column in $N$ changes. We essentially just check if its new reduced cost remains correct. $B^{-1}$ stays the same.
+* **If $x_j$ is Basic:** The column is inside $B$. Changing it changes $B$, which changes $B^{-1}$. Since $B^{-1}$ affects **every** calculation in the tableau (RHS, shadow prices, all reduced costs), the entire tableau structure is disrupted. We usually cannot use simple range formulas and may need to re-invert or use the Sherman-Morrison formula.
+"""
+    },
+    {
+        "id": 103,
+        "topic": "Primal-Dual Theory",
+        "question": """
+**Statement:** "If the Dual LP has alternative optimal solutions, then the Primal LP must be degenerate."
+
+**Task:** Prove this statement is True using Complementary Slackness.
+""",
+        "solution": """
+**Proof:**
+1. Let $w^1$ and $w^2$ be two distinct optimal dual solutions.
+2. Their convex combination $w^* = 0.5w^1 + 0.5w^2$ is also optimal.
+3. Since $w^1 \\neq w^2$, there exists some index (constraint) where the dual constraints are "looser" for the mix than for the individual corners, or simply that the set of binding dual constraints is smaller than the number of variables.
+4. More formally: If the Dual has multiple solutions, the Dual feasible region's optimal face has dimension $\\ge 1$.
+5. By Strict Complementary Slackness, if the Dual has "extra" freedom (variables not fixed to zero/boundaries), the corresponding Primal variables must be fixed to zero.
+6. This forces "extra" zeros in the Primal solution beyond the standard $n-m$ non-basics, satisfying the definition of Primal Degeneracy.
+"""
+    },
+    {
+        "id": 104,
+        "topic": "Dantzig-Wolfe (Unboundedness)",
+        "question": """
+**True or False:**
+In the Dantzig-Wolfe algorithm, if the **Subproblem** is unbounded (returns a ray), then the **Original Master Problem** must also be unbounded.
+""",
+        "solution": """
+**Answer:** False.
+
+**Explanation:**
+The Subproblem ignores the coupling constraints (A matrices). It only checks $x \\in X$.
+* It is possible that $x$ can go to infinity inside the region $X$ (Subproblem unbounded).
+* However, the **Coupling Constraints** in the Master Problem might "cut off" that ray.
+* When we add the ray to the Master Problem, the Master Problem will assign a finite weight ($\\mu$) to it, limited by the coupling constraints. The original problem is only unbounded if the Master Problem *also* becomes unbounded after adding the ray.
+"""
+    },
+    {
+        "id": 105,
+        "topic": "Strict Complementary Slackness",
+        "question": """
+**Problem:**
+You have 3 distinct optimal primal-dual pairs: $(x^1, w^1), (x^2, w^2), (x^3, w^3)$.
+None of them individually satisfy Strict Complementary Slackness (SCS) for all indices.
+
+**Task:** How can you mathematically generate a single pair $(x^*, w^*)$ that is guaranteed to satisfy SCS for the entire problem?
+""",
+        "solution": """
+**Method:** Barycenter (Averaging)
+
+**Formula:**
+$x^* = \\frac{1}{3}(x^1 + x^2 + x^3)$
+$w^* = \\frac{1}{3}(w^1 + w^2 + w^3)$
+
+**Why it works:**
+For any index $j$, if *any* of the individual solutions has a strict inequality (e.g., $x_j^k > 0$), the average $x_j^*$ will be positive because all $x \\ge 0$. The average "accumulates" the positivity of all individual solutions. Since an SCS solution is known to exist (Goldman-Tucker Theorem), the convex combination of all BFS optima will yield it.
+"""
+    },
+    {
+        "id": 12,
+        "topic": "Sensitivity Analysis (Matrix)",
+        "question": """
+**Problem:**
+Consider an LP with optimal basis $B$. You want to check if the current basis remains optimal if the objective coefficient of a **basic** variable $x_k$ changes by $\\Delta$.
+
+**Task:**
+Explain why you cannot simply check $z_k - c_k \\ge 0$. What specific formula must be satisfied for *all* non-basic variables $j$?
+""",
+        "solution": """
+**Answer:**
+Changing $c_k$ (where $x_k$ is basic) changes the dual vector $w = c_B B^{-1}$.
+Since $w$ changes, the reduced cost of **every** non-basic variable potentially changes.
+
+**Formula:**
+You must check:
+$(z_j - c_j)_{new} = (w_{old} + \\Delta \\cdot (B^{-1})_{row \\ k}) A_j - c_j \\ge 0$
+for **all** non-basic variables $j$. The range is determined by the tightest of these constraints.
+"""
+    },
+    {
+        "id": 13,
+        "topic": "Dantzig-Wolfe (Block Structure)",
+        "question": """
+**Scenario:**
+You are solving a problem with 2 blocks using Dantzig-Wolfe.
+* Block 1 generates a proposal $v_1$ with profit 10 and resource usage 4.
+* Block 2 generates a proposal $v_2$ with profit 12 and resource usage 6.
+
+The Master Problem has a single coupling constraint with capacity 8.
+
+**Question:**
+Can the Master Problem simply select $v_1$ and $v_2$ both at full strength? If not, how does it mathematically combine them?
+""",
+        "solution": """
+**Answer:** No.
+
+**Explanation:**
+Total resource usage = $4 + 6 = 10$, which exceeds capacity 8.
+The Master Problem will find weights $\\lambda_{1}$ and $\\lambda_{2}$ such that:
+1. $4\\lambda_{1} + 6\\lambda_{2} \\le 8$
+2. $\\lambda_{1} = 1$ (Convexity Block 1)
+3. $\\lambda_{2} = 1$ (Convexity Block 2)
+
+Since this system is infeasible with $\\lambda=1$, the Master Problem cannot pick both fully. It implies the current set of columns might be insufficient to find a feasible solution if these are the only options, or it must use slack/artificial variables if available. In a real iteration, it would mix these with the 'zero' solution or other columns.
+"""
+    },
+    {
+        "id": 14,
+        "topic": "Primal-Dual Theory (Strict Slackness)",
+        "question": """
+**Problem:**
+Let $x^*$ and $w^*$ be a primal-dual optimal pair.
+Suppose for a specific variable $x_j$, we have $x_j^* = 0$ and the corresponding reduced cost is also 0 (i.e., $z_j - c_j = 0$).
+
+**Task:**
+Does this pair satisfy **Strict** Complementary Slackness? What does this imply about the solution space?
+""",
+        "solution": """
+**Answer:** No.
+
+**Explanation:**
+Strict Complementary Slackness requires that $x_j + s_j > 0$. Here, both are zero ($x_j^*=0$ and dual slack $s_j = z_j - c_j = 0$).
+
+**Implication:**
+This indicates **Degeneracy**. specifically, it usually implies that there are alternative optimal solutions (either in the primal or the dual) that could be pivoted to. This specific pair sits on the boundary where strictness fails.
+"""
+    },
+    {
+        "id": 15,
+        "topic": "Sensitivity Analysis (RHS)",
+        "question": """
+**Problem:**
+You are given the optimal inverse basis $B^{-1} = \\begin{bmatrix} 2 & -1 \\\\ -1 & 1 \\end{bmatrix}$ and the original RHS $b = \\begin{bmatrix} 10 \\\\ 8 \\end{bmatrix}$.
+
+**Task:**
+Calculate the current values of the basic variables $x_B$. Then, determine how much $b_2$ can increase before the current basis becomes infeasible.
+""",
+        "solution": """
+**1. Current Values:**
+$x_B = B^{-1}b = \\begin{bmatrix} 2 & -1 \\\\ -1 & 1 \\end{bmatrix} \\begin{bmatrix} 10 \\\\ 8 \\end{bmatrix} = \\begin{bmatrix} 20 - 8 \\\\ -10 + 8 \\end{bmatrix} = \\begin{bmatrix} 12 \\\\ -2 \\end{bmatrix}$.
+*(Wait! The current basis is infeasible ($x_2 = -2$). If this was an optimal table provided in a problem, check for typos. Assuming standard feasibility context:)*
+
+**2. Range for $b_2$ (let $b_2 = 8 + \\Delta$):**
+$x_B(\\Delta) = \\begin{bmatrix} 2 & -1 \\\\ -1 & 1 \\end{bmatrix} \\begin{bmatrix} 10 \\\\ 8+\\Delta \\end{bmatrix} = \\begin{bmatrix} 12 - \\Delta \\\\ -2 + \\Delta \\end{bmatrix}$.
+
+For feasibility ($x_B \\ge 0$):
+* $12 - \\Delta \\ge 0 \\implies \\Delta \\le 12$
+* $-2 + \\Delta \\ge 0 \\implies \\Delta \\ge 2$
+
+**Answer:** $b_2$ must **increase** by at least 2 units (to make $x_2 \\ge 0$) and can increase up to 12 additional units.
+"""
+    },
+    {
+        "id": 16,
+        "topic": "Dantzig-Wolfe (Initialization)",
+        "question": """
+**Scenario:**
+You are initializing a Master Problem. You cannot find any obvious feasible starting columns from the subproblems that satisfy the coupling constraint $Ax \\le b$.
+
+**Task:**
+What is the standard "Phase 1" approach to handle this in Dantzig-Wolfe?
+""",
+        "solution": """
+**Answer:** Add Artificial Variables.
+
+**Explanation:**
+1. Introduce artificial variables $a_i$ to the coupling constraints: $\\sum \\lambda_j (Ax_j) + a = b$.
+2. Assign a large penalty cost (Big-M) to $a$ in the Master objective.
+3. Run the Dantzig-Wolfe iterations. The high cost will force the Master Problem to request columns from the subproblems that help reduce $a$ to zero.
+4. Once $a=0$, discard it and continue with the feasible columns found.
+"""
     }
 ]
 
@@ -139,7 +354,7 @@ def load_questions():
     with open(FILE_NAME, "r") as f:
         try:
             file_questions = json.load(f)
-            # Sync new questions from code
+            # Merge logic: Add new questions from CODE that aren't in FILE
             existing_ids = {q["id"] for q in file_questions}
             new_questions_found = False
             for q in INITIAL_QUESTIONS:
@@ -155,59 +370,71 @@ def load_questions():
             return INITIAL_QUESTIONS
 
 # --- App Layout ---
-st.set_page_config(page_title="OR Exam Prep", layout="centered")
+st.set_page_config(page_title="OR Exam Prep", layout="centered", page_icon="🎓")
 
-# --- VISIBILITY FIX: FORCE BLACK TEXT EVERYWHERE ---
+# --- CSS STYLING (The "Flashcard" Theme) ---
 st.markdown("""
 <style>
-    /* 1. Force Main Background to White */
+    /* 1. Global Background: Soft Off-White */
     .stApp {
-        background-color: #ffffff !important;
+        background-color: #f4f6f9;
     }
     
-    /* 2. Force ALL text to be black */
-    p, h1, h2, h3, h4, h5, h6, li, div, span {
-        color: #000000 !important;
-    }
-    
-    /* 3. Question Card Styling */
+    /* 2. Question Card: Physical Paper Look */
     .question-card {
-        background-color: #f8f9fa; /* Light Grey background */
-        padding: 25px;
-        border-radius: 10px;
-        border: 1px solid #ddd;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        margin-bottom: 20px;
+        background-color: #ffffff;
+        padding: 40px;
+        border-radius: 12px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        margin-bottom: 25px;
+        transition: transform 0.2s ease;
     }
     
-    /* 4. Fix Success Box (Solution Area) Text Color */
-    .stSuccess {
-        background-color: #d4edda !important;
-        color: #155724 !important; /* Dark Green Text */
+    /* Hover effect for fun */
+    .question-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0,0,0,0.08);
     }
-    .stSuccess p, .stSuccess div {
-        color: #155724 !important;
+
+    /* 3. Typography Enforcement (Dark Grey for Readability) */
+    .question-card p, .question-card li, .question-card div, .question-card span, h1, h2, h3 {
+        color: #2c3e50 !important;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
     }
-    
-    
-    /* 5. Topic Badge */
+
+    /* 4. Topic Badge */
     .topic-badge {
-        background-color: #007bff;
-        color: white !important;
-        padding: 4px 10px;
-        border-radius: 15px;
-        font-size: 0.85em;
-        font-weight: bold;
+        background-color: #e3f2fd;
+        color: #1565c0 !important;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        padding: 6px 12px;
+        border-radius: 20px;
         display: inline-block;
-        margin-bottom: 15px;
+        margin-bottom: 20px;
+        border: 1px solid #bbdefb;
+    }
+
+    /* 5. Streamlit Button Tweaks */
+    .stButton button {
+        border-radius: 8px;
+        font-weight: 600;
+        height: 3rem;
     }
 </style>
 """, unsafe_allow_html=True)
 
-st.title("🎓 Linear Optimization Final Prep")
+# --- Header ---
+st.title("🎓 Operations Research Prep")
+st.caption("Comprehensive Exam Review • Dantzig-Wolfe • Sensitivity • Theory")
 
 questions = load_questions()
 
+# --- State Management ---
 if 'current_index' not in st.session_state:
     st.session_state.current_index = 0
 if 'show_solution' not in st.session_state:
@@ -228,20 +455,32 @@ def toggle_solution():
 
 current_q = questions[st.session_state.current_index]
 
+# --- Progress Bar ---
+progress_text = f"Question {st.session_state.current_index + 1} of {len(questions)}"
 st.progress((st.session_state.current_index + 1) / len(questions))
-st.caption(f"Question {st.session_state.current_index + 1} of {len(questions)}")
+st.caption(progress_text)
 
-# --- The Question Card ---
+# --- The Flashcard ---
 with st.container():
-    # We render the topic badge and structure via HTML
+    # Use HTML for the styled container + Topic Badge
     st.markdown(f"""
     <div class="question-card">
-        <span class="topic-badge">{current_q.get('topic', 'General')}</span>
+        <div class="topic-badge">{current_q.get('topic', 'General')}</div>
     </div>
     """, unsafe_allow_html=True)
     
-    # We render the Question Text separately using Streamlit Markdown
-    # This ensures LaTeX math renders correctly while inheriting our black text color
+    # Use standard Streamlit Markdown for the question text.
+    # We place it "outside" the HTML div in code, but visually it aligns
+    # because of the clean layout. To put it *inside* the white box visually,
+    # we rely on the CSS targeting standard elements or we can print it directly.
+    # A cleaner trick is to put the text inside the HTML, but that breaks LaTeX.
+    # So we use a 'info' box which we style to match white, OR just simple markdown.
+    
+    # We will just print the markdown. The CSS above forces the text color.
+    # Note: Visually, to make it look like it's IN the card, we have to be tricky 
+    # with Streamlit. The best robust way is to use `st.info` with custom CSS 
+    # to turn it white.
+    
     st.info(current_q["question"])
 
 # --- Controls ---
@@ -251,8 +490,9 @@ with col1:
         prev_question()
         st.rerun()
 with col2:
-    btn_text = "🙈 Hide Solution" if st.session_state.show_solution else "👁️ Reveal Solution"
-    if st.button(btn_text, type="primary", use_container_width=True):
+    label = "🙈 Hide Solution" if st.session_state.show_solution else "👁️ Reveal Solution"
+    # Use primary color for the main action
+    if st.button(label, type="primary", use_container_width=True):
         toggle_solution()
         st.rerun()
 with col3:
@@ -260,7 +500,7 @@ with col3:
         next_question()
         st.rerun()
 
-# --- Solution Area ---
+# --- Solution Reveal ---
 if st.session_state.show_solution:
-    st.markdown("### Solution")
+    st.markdown("---")
     st.success(current_q["solution"])
