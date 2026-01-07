@@ -435,8 +435,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- Header ---
-st.title("🎓 Operations Research Prep")
-st.caption("Comprehensive Exam Review • Dark Mode Edition 🌙")
+st.title("🎓 Linear Optimization Prep")
+st.caption("Comprehensive Exam Review")
 
 questions = load_questions()
 
