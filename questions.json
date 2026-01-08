@@ -474,5 +474,75 @@
         "topic": "Graph Theory (Forests)",
         "question": "\n**Problem:**\nA forest consists of $k$ connected components and has $n$ vertices. Derivatively, how many edges does it have?\n",
         "solution": "\n**Answer:** $n - k$.\n\n**Derivation:**\n1. Let the components be trees $T_1, T_2, \\dots, T_k$.\n2. Let $T_i$ have $n_i$ vertices. We know $\\sum n_i = n$.\n3. A tree with $n_i$ vertices has exactly $n_i - 1$ edges.\n4. Total edges $E = \\sum (n_i - 1)$.\n5. $E = (n_1 - 1) + (n_2 - 1) + \\dots + (n_k - 1)$.\n6. $E = (n_1 + n_2 + \\dots + n_k) - (1 + 1 + \\dots + 1)$.\n7. $E = n - k$.\n"
+    },
+    {
+        "id": 72,
+        "lesson": "IE455",
+        "topic": "Matrices in Graphs (Triangles)",
+        "question": "\n**Problem:**\nLet $A$ be the adjacency matrix of a simple graph $G$. \nShow that the number of triangles ($K_3$ subgraphs) in $G$ is equal to $\\frac{1}{6} \\text{trace}(A^3)$.\n",
+        "solution": "\n**Proof:**\n1. The entry $(A^3)_{ii}$ represents the number of walks of length 3 starting at $i$ and ending at $i$.\n2. A closed walk of length 3 ($i \\to j \\to k \\to i$) corresponds to a triangle involving vertex $i$.\n3. However, the walk counts the triangle multiple times:\n   * We can traverse the triangle in 2 directions (clockwise/counter-clockwise).\n   * We can start the walk at any of the 3 vertices ($i, j,$ or $k$).\n4. Total overcounts per triangle = $3 \\text{ vertices} \\times 2 \\text{ directions} = 6$.\n5. The trace sums these values over all $i$: $\\text{trace}(A^3) = \\sum (A^3)_{ii}$.\n6. Therefore, the actual number of unique triangles is $\\frac{1}{6} \\text{trace}(A^3)$.\n"
+    },
+    {
+        "id": 73,
+        "lesson": "IE455",
+        "topic": "Graph Theory (Bipartite Properties)",
+        "question": "\n**Problem:**\nProve that the **Hypercube graph** $Q_k$ (vertices are binary strings of length $k$, edges between strings differing by 1 bit) is a Bipartite graph for all $k \\ge 1$.\n",
+        "solution": "\n**Proof:**\n1. Partition the vertices into two sets $V_{even}$ and $V_{odd}$ based on the **weight** of the binary string (number of 1s).\n2. $V_{even} = \\{v \\mid \\text{number of 1s in } v \\text{ is even}\\}$.\n3. $V_{odd} = \\{v \\mid \\text{number of 1s in } v \\text{ is odd}\\}$.\n4. An edge exists only if two strings differ by exactly 1 bit.\n5. Changing 1 bit (0 to 1, or 1 to 0) always changes the parity of the weight (Even $\\to$ Odd or Odd $\\to$ Even).\n6. Therefore, edges only exist between $V_{even}$ and $V_{odd}$. No edges exist within the sets.\n7. This satisfies the definition of a bipartite graph.\n"
+    },
+    {
+        "id": 74,
+        "lesson": "IE455",
+        "topic": "Connectivity (Inequality)",
+        "question": "\n**Problem:**\nFor any connected graph $G$, let $\\lambda(G)$ be the edge-connectivity (min edges to disconnect) and $\\delta(G)$ be the minimum degree.\nProve that $\\lambda(G) \\le \\delta(G)$.\n",
+        "solution": "\n**Proof:**\n1. Let $v$ be a vertex with the minimum degree, i.e., $\\deg(v) = \\delta(G)$.\n2. The set of edges incident to $v$ connects $v$ to the rest of the graph.\n3. There are exactly $\\delta(G)$ such edges.\n4. If we remove these $\\delta(G)$ edges, vertex $v$ becomes isolated, and the graph becomes disconnected.\n5. Since $\\lambda(G)$ is the size of the *minimum* edge-cut required to disconnect the graph, it cannot be larger than the size of this specific cut.\n6. Therefore, $\\lambda(G) \\le \\delta(G)$.\n"
+    },
+    {
+        "id": 75,
+        "lesson": "IE455",
+        "topic": "Graph Structure (Subgraphs)",
+        "question": "\n**Problem:**\nProve that every simple graph $G$ with minimum degree $\\delta(G) \\ge 2$ contains a cycle.\n",
+        "solution": "\n**Proof (Longest Path Argument):**\n1. Consider a **longest simple path** in $G$: $P = v_1 - v_2 - \\dots - v_k$.\n2. Look at the endpoint $v_k$. Since $\\delta(G) \\ge 2$, $v_k$ must have at least 2 neighbors.\n3. One neighbor is $v_{k-1}$ (on the path).\n4. Let $w$ be another neighbor of $v_k$.\n5. If $w$ was not on the path $P$, we could extend the path to $v_k - w$, contradicting the assumption that $P$ is the longest path.\n6. Therefore, $w$ must already be on the path (i.e., $w = v_i$ for some $i < k-1$).\n7. The edge $(v_k, v_i)$ combined with the path segment $v_i \\dots v_k$ forms a cycle.\n"
+    },
+    {
+        "id": 76,
+        "lesson": "IE455",
+        "topic": "Trees (Regularity)",
+        "question": "\n**Problem:**\nProve that no finite $k$-regular tree exists for $k \\ge 2$, unless the tree has only 2 vertices (and $k=1$).\n*(A $k$-regular graph means every vertex has degree $k$).*\n",
+        "solution": "\n**Proof:**\n1. Assume a finite tree $T$ has $n$ vertices and is $k$-regular with $k \\ge 2$.\n2. Sum of degrees $\\sum \\deg(v) = n \\cdot k$.\n3. By Handshaking Lemma, $\\sum \\deg(v) = 2|E|$. So $nk = 2|E|$.\n4. For any tree, $|E| = n - 1$. Substituting this in: $nk = 2(n - 1) = 2n - 2$.\n5. Rearranging: $nk - 2n = -2 \\implies n(k - 2) = -2$.\n6. Since $n$ (vertices) must be positive, $(k-2)$ must be negative.\n7. This implies $k - 2 < 0 \\implies k < 2$.\n8. This contradicts the assumption $k \\ge 2$. Thus, no such tree exists.\n"
+    },
+    {
+        "id": 77,
+        "lesson": "IE455",
+        "topic": "Eulerian vs Hamiltonian",
+        "question": "\n**Problem:**\nGive a counter-example (describe the graph) to the statement: \"If a graph is Eulerian, it must be Hamiltonian.\"\n",
+        "solution": "\n**Counter-Example: The Bowtie Graph.**\n1. **Construction:** Take two disjoint triangles $(a,b,c)$ and $(d,e,f)$. Merge vertex $c$ and $d$ into a single vertex $v$. \n2. **Structure:** Two triangles sharing exactly one vertex $v$.\n3. **Eulerian Check:** Degrees: $v$ has degree 4. All other 4 vertices have degree 2. All degrees are even $\\implies$ **Eulerian**.\n4. **Hamiltonian Check:** Vertex $v$ is a **cut-vertex**. Removing $v$ disconnects the graph.\n   * A Hamiltonian cycle must visit every vertex exactly once.\n   * If it enters the left triangle, it must pass through $v$ to exit.\n   * Once it exits, it cannot return to $v$ (visited already). Thus, it cannot visit the vertices in the right triangle (or vice versa).\n   * Therefore, it is **Not Hamiltonian**.\n"
+    },
+    {
+        "id": 78,
+        "lesson": "IE455",
+        "topic": "Graph Theory (Forests)",
+        "question": "\n**Problem:**\nProve that if every edge in a connected graph $G$ is a **bridge** (cut-edge), then $G$ is a Tree.\n",
+        "solution": "\n**Proof:**\n1. Recall the property: An edge is a bridge if and only if it does not lie on any cycle.\n2. If **every** edge is a bridge, then **no** edge lies on a cycle.\n3. This implies the graph $G$ contains no cycles (acyclic).\n4. Since $G$ is connected and acyclic, by definition, $G$ is a Tree.\n"
+    },
+    {
+        "id": 79,
+        "lesson": "IE455",
+        "topic": "Digraphs (DAGs)",
+        "question": "\n**Problem:**\nProve that every finite Directed Acyclic Graph (DAG) has at least one vertex with out-degree 0 (a Sink).\n",
+        "solution": "\n**Proof (Longest Path):**\n1. Consider a longest directed path $P = v_1 \\to v_2 \\to \\dots \\to v_k$.\n2. Look at the last vertex $v_k$.\n3. Does $v_k$ have an outgoing edge to some vertex $u$?\n   * If $u$ is **not** on the path, we can extend the path to $v_k \\to u$, contradicting max length.\n   * If $u$ **is** on the path (say $u = v_i$), then the edge $v_k \\to v_i$ creates a directed cycle ($v_i \\dots v_k \\to v_i$).\n   * This contradicts the assumption that the graph is Acyclic (DAG).\n4. Therefore, $v_k$ cannot have any outgoing edges. $\\deg_{out}(v_k) = 0$.\n"
+    },
+    {
+        "id": 80,
+        "lesson": "IE455",
+        "topic": "Matching (Odd Vertices)",
+        "question": "\n**Problem:**\nProve that a bipartite graph with an **odd** number of vertices cannot have a Perfect Matching.\n",
+        "solution": "\n**Proof:**\n1. Let the graph be $G=(V,E)$. Let $|V| = n$, where $n$ is odd.\n2. A perfect matching $M$ is a set of disjoint edges that covers every vertex.\n3. Each edge in $M$ covers exactly 2 vertices.\n4. If $|M| = k$, then the number of covered vertices is $2k$.\n5. For a matching to be perfect, it must cover all vertices, so $2k = n$.\n6. This implies $n$ must be even. Since $n$ is odd, no integer solution for $k$ exists.\n7. Thus, no perfect matching exists.\n"
+    },
+    {
+        "id": 81,
+        "lesson": "IE455",
+        "topic": "Complement Graph (Diameter)",
+        "question": "\n**Problem:**\nProve that if a graph $G$ is **disconnected**, then the **diameter** of its complement $\\bar{G}$ is strictly less than 3 (i.e., diam($\\bar{G}$) $\\le 2$).\n",
+        "solution": "\n**Proof:**\n1. Let $u, v$ be any two vertices in $\\bar{G}$.\n2. **Case 1:** $u$ and $v$ are in different connected components of $G$.\n   * Then there is no edge $(u,v)$ in $G$. Thus, edge $(u,v)$ exists in $\\bar{G}$. Distance = 1.\n3. **Case 2:** $u$ and $v$ are in the *same* connected component of $G$.\n   * Pick any vertex $w$ from a *different* component of $G$ (exists since $G$ is disconnected).\n   * In $G$, no edges exist between the components, so $(u,w) \\notin E(G)$ and $(v,w) \\notin E(G)$.\n   * In $\\bar{G}$, edges $(u,w)$ and $(w,v)$ MUST exist.\n   * Thus, path $u \\to w \\to v$ exists. Distance = 2.\n4. In all cases, distance $\\le 2$. Thus diam($\\bar{G}$) $\\le 2$.\n"
     }
 ]
