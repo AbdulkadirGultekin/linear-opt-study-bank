@@ -1,7 +1,7 @@
 import streamlit as st
 import json
 import os
-
+st.set_page_config(page_title="IE Exam Prep", layout="centered", page_icon="🎓")
 # --- Configuration ---
 FILE_NAME = "questions.json"
 
@@ -18,7 +18,7 @@ def load_questions():
             return []
 
 # --- App Layout ---
-st.set_page_config(page_title="OR Exam Prep", layout="centered", page_icon="🎓")
+
 
 # --- CSS STYLING ---
 st.markdown("""
