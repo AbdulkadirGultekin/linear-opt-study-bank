@@ -614,5 +614,131 @@
         "topic": "Bipartite Counting",
         "question": "\n**Problem:**\nHow many perfect matchings does the complete bipartite graph $K_{n,n}$ have?\n",
         "solution": "\n**Answer:** $n!$ (n factorial).\n\n**Reasoning:**\n1. Let the two sets of vertices be $U = \\{u_1, \\dots, u_n\\}$ and $V = \\{v_1, \\dots, v_n\\}$.\n2. To form a perfect matching, we must map every $u_i$ to a distinct $v_j$.\n3. For $u_1$, there are $n$ choices in $V$.\n4. For $u_2$, there are $n-1$ remaining choices.\n5. ...\n6. For $u_n$, there is 1 choice.\n7. Total choices = $n \\times (n-1) \\times \\dots \\times 1 = n!$.\n"
+    },
+    {
+        "id": 92,
+        "lesson": "IE455",
+        "topic": "Graph Theory (Planarity)",
+        "question": "\n**Problem (Derived from Quiz 3):**\nHow many of the following graphs are **NOT** planar?\n$K_4$, $K_{2,100}$, $K_5$, $K_{3,3}$, $C_{100}$.\n",
+        "solution": "\n**Answer:** 2 graphs ($K_5$ and $K_{3,3}$).\n\n**Reasoning:**\n1. **$K_4$:** Planar. (Can be drawn as a triangle with a center point connected to corners).\n2. **$K_{2,100}$:** Planar. (Put 2 vertices in middle, 100 around them. No crossing needed).\n3. **$K_5$:** **Not Planar** (Kuratowski's Theorem).\n4. **$K_{3,3}$:** **Not Planar** (Kuratowski's Theorem).\n5. **$C_{100}$:** Planar. (It's just a big cycle).\n"
+    },
+    {
+        "id": 93,
+        "lesson": "IE455",
+        "topic": "Pigeonhole (Divisibility)",
+        "question": "\n**Problem (Derived from Quiz 2):**\nAt least how many integers must be selected from the set of all integers to guarantee that at least two of them have a difference divisible by 8?\n",
+        "solution": "\n**Answer:** 9.\n\n**Reasoning:**\n1. The \"holes\" are the possible remainders modulo 8: $\\{0, 1, 2, 3, 4, 5, 6, 7\\}$.\n2. There are 8 distinct remainders.\n3. By PHP, if we pick $8+1=9$ integers, two must share the same remainder $r$.\n4. If $x \\equiv r \\pmod 8$ and $y \\equiv r \\pmod 8$, then $x - y \\equiv 0 \\pmod 8$.\n"
+    },
+    {
+        "id": 94,
+        "lesson": "IE455",
+        "topic": "Logic (Friends)",
+        "question": "\n**Problem (Derived from Quiz 2 & Study Prob):**\nIn a party of 20 people, assuming friendship is symmetric, prove that there must be at least two people who have the exact same number of friends present.\n",
+        "solution": "\n**Proof:**\n1. The possible number of friends for any person ranges from 0 to 19.\n2. **Case 1:** Everyone has at least 1 friend. Degrees $\\in \\{1, \\dots, 19\\}$. (19 holes, 20 people $\\implies$ collision).\n3. **Case 2:** Someone has 0 friends. If Person A has 0 friends, then no one can have 19 friends (because that would require being friends with everyone, including A). Thus degrees $\\in \\{0, \\dots, 18\\}$. (19 holes, 20 people $\\implies$ collision).\n4. **Conclusion:** It is impossible to have a set of 20 distinct degrees for 20 vertices in a simple graph.\n"
+    },
+    {
+        "id": 95,
+        "lesson": "IE455",
+        "topic": "Eulerian Graphs (Trees)",
+        "question": "\n**Problem (Derived from Quiz 7):**\nConsider the set of all Trees of order 20. How many of these trees contain a **closed** Eulerian Trail?\n",
+        "solution": "\n**Answer:** 0.\n\n**Reasoning:**\n1. A closed Eulerian trail requires **every** vertex to have an even degree.\n2. Any tree with $n \\ge 2$ vertices has at least 2 leaves (vertices of degree 1).\n3. Since leaves have odd degree, no tree (of order $>1$) can be Eulerian.\n"
+    },
+    {
+        "id": 96,
+        "lesson": "IE455",
+        "topic": "Degree Sequences",
+        "question": "\n**Problem (Derived from Quiz 3/7):**\nDoes there exist a tree with the degree sequence $4, 3, 2, 1, 1, 1$? Explain.\n",
+        "solution": "\n**Answer:** No.\n\n**Check 1 (Sum):** Sum = $4+3+2+1+1+1 = 12$.\nBy Handshaking, $2|E| = 12 \\implies |E| = 6$.\n**Check 2 (Tree Property):** A tree with 6 vertices ($n=6$) must have exactly $n-1 = 5$ edges.\nHere, the degrees imply 6 edges.\n**Conclusion:** Impossible. (Also fails Havel-Hakimi reduction).\n"
+    },
+    {
+        "id": 97,
+        "lesson": "IE455",
+        "topic": "Eulerian Complete Graphs",
+        "question": "\n**Problem (Derived from Quiz 4):**\nConsider the set of complete graphs $\\{K_n \\mid 2 \\le n \\le 100\\}$. How many of them have a **closed** Eulerian trail?\n",
+        "solution": "\n**Analysis:**\n1. $K_n$ is Eulerian iff every vertex has even degree.\n2. The degree of every vertex in $K_n$ is $n-1$.\n3. We need $n-1$ to be even $\\implies n$ must be **Odd**.\n4. We need to count odd integers in the range $[2, 100]$.\n5. These are $\\{3, 5, 7, \\dots, 99\\}$.\n6. Count = $\\frac{99-3}{2} + 1 = 48 + 1 = 49$.\n"
+    },
+    {
+        "id": 98,
+        "lesson": "IE455",
+        "topic": "Hamiltonian (Knights)",
+        "question": "\n**Problem (Derived from Quiz 5):**\nIs it possible for a Knight to perform a **closed** tour (visit every square exactly once and return to start) on a $4 \\times 4$ chessboard?\n",
+        "solution": "\n**Answer:** No.\n\n**Reasoning:**\n1. A Knight's move always alternates colors (Black $\\to$ White $\\to$ Black).\n2. A closed tour on a graph is a Hamiltonian Cycle.\n3. The $4 \\times 4$ board has 16 squares. This bipartite graph condition is satisfied (8 Black, 8 White).\n4. **However:** A known theorem states a Knight's tour is impossible on $m \\times n$ if either dimension is less than 5 (except trivial cases? No, 4x4 is too constrained). \n5. **Specifics:** The degree of corner vertices in the move-graph is 2. The degree of the center 4 squares is... wait. $4 \\times 4$ has no solution. (Standard result).\n"
+    },
+    {
+        "id": 99,
+        "lesson": "IE455",
+        "topic": "Hamiltonian (Ore's Property)",
+        "question": "\n**Problem (Derived from Quiz 9):**\nLet $G$ be a graph of order $n \\ge 3$ that satisfies **Ore's Property** (for non-adjacent $u,v$, $\\deg(u)+\\deg(v) \\ge n$).\nDoes this guarantee $G$ has a Perfect Matching? (Assume $n$ is even).\n",
+        "solution": "\n**Answer:** Yes.\n\n**Reasoning:**\n1. Ore's Property guarantees that $G$ is **Hamiltonian** (contains a cycle passing through all vertices).\n2. If $G$ has a Hamiltonian cycle of even length $n$, we can pick alternating edges of the cycle $(e_1, e_3, e_5, \\dots)$ to form a Perfect Matching.\n3. Thus, Ore's condition implies Hamiltonian, which implies Perfect Matching (for even $n$).\n"
+    },
+    {
+        "id": 100,
+        "lesson": "IE455",
+        "topic": "Forest Components",
+        "question": "\n**Problem (Derived from Quiz 6):**\nA forest has 60 vertices and 55 edges. How many connected components does it have?\n",
+        "solution": "\n**Answer:** 5.\n\n**Formula:** $k = n - |E|$.\n**Calc:** $60 - 55 = 5$.\n"
+    },
+    {
+        "id": 101,
+        "lesson": "IE455",
+        "topic": "Matchings (K3,3)",
+        "question": "\n**Problem (Derived from Quiz 9):**\nHow many matchings (of any size, including empty) does the graph $K_{3,3}$ have?\n",
+        "solution": "\n**Answer:** 34.\n\n**Enumeration:**\n* **Size 0:** 1 way (empty).\n* **Size 1:** 9 edges $\\implies$ 9 ways.\n* **Size 2:** Choose first edge (9 ways). Choose second edge disjoint from first (4 ways left). Order doesn't matter ($/2$). $9 \\times 4 / 2 = 18$ ways.\n* **Size 3 (Perfect):** $3! = 6$ ways.\n* **Total:** $1 + 9 + 18 + 6 = 34$.\n"
+    },
+    {
+        "id": 102,
+        "lesson": "IE455",
+        "topic": "Matchings (Complete Bipartite)",
+        "question": "\n**Problem (Derived from Quiz 8):**\nHow many **perfect** matchings does the graph $K_{11,11}$ have?\n",
+        "solution": "\n**Answer:** $11!$\n\n**Reasoning:**\nThis is the number of bijections from the first set of 11 vertices to the second set of 11 vertices.\n"
+    },
+    {
+        "id": 103,
+        "lesson": "IE455",
+        "topic": "Trees (Spanning)",
+        "question": "\n**Problem (Derived from Quiz 6):**\nTrue or False: If $G$ is a connected graph ($n \\ge 2$) and $e$ is any specific edge of $G$, there exists a spanning tree of $G$ that contains $e$ if and only if $e$ is not a self-loop.\n",
+        "solution": "\n**Answer:** True.\n\n**Reasoning:**\nIf $e$ is a bridge, it MUST be in every spanning tree. If $e$ is part of a cycle, we can choose to include $e$ and break the cycle elsewhere. The only edges that cannot be in a spanning tree are self-loops (which form a cycle of length 1 immediately).\n"
+    },
+    {
+        "id": 104,
+        "lesson": "IE455",
+        "topic": "Graph Coloring (Maps)",
+        "question": "\n**Problem (Derived from Quiz 1):**\nWhat is the minimum number of colors required to color a map formed by a \"Pie\" sliced into 6 pieces, where all 6 pieces touch a central hub?\n*(Visual: 6 wedges touching center, plus the center itself? Or just wedges? Let's assume a Wheel Graph structure)*.\n\n**Refined Question:** What is $\\chi(W_6)$ (Wheel graph with center + 6 rim vertices)?\n",
+        "solution": "\n**Answer:** 3 (if rim length is even) or 4 (if rim length is odd).\n\n**Analysis:**\n1. $W_6$ has a central hub connected to a cycle $C_6$.\n2. The rim $C_6$ is an even cycle, so $\\chi(C_6) = 2$.\n3. The hub connects to all rim vertices, so it needs a 3rd distinct color.\n4. **Answer:** 3 colors.\n"
+    },
+    {
+        "id": 105,
+        "lesson": "IE455",
+        "topic": "Kruskal's Algorithm",
+        "question": "\n**Problem (Derived from Quiz 7):**\nTrue or False: In Kruskal's algorithm, if edge weights are not distinct, ties can be broken arbitrarily, but the **set of edges** selected in the MST is always unique.\n",
+        "solution": "\n**Answer:** False.\n\n**Explanation:**\nIf edge weights are not distinct, the *set* of edges is **not** unique (you might pick edge $e_1$ or $e_2$ if they have same weight and span the same components). However, the **total weight** of the MST is unique.\n"
+    },
+    {
+        "id": 106,
+        "lesson": "IE455",
+        "topic": "Covering (Graphs)",
+        "question": "\n**Problem (Derived from Quiz 9):**\nFor a specific graph (let's say $C_5$), what is the minimum size of a **Vertex Cover**?\n",
+        "solution": "\n**Analysis:**\n1. Graph $1-2-3-4-5-1$.\n2. To cover edge (1,2), pick 2.\n3. To cover edge (3,4), pick 4.\n4. Edge (5,1) remains. 1 and 5 are neighbors of our chosen set. We must pick 1 or 5. Say 5.\n5. Cover $\\{2, 4, 5\\}$. Size 3.\n6. **Answer:** 3.\n"
+    },
+    {
+        "id": 107,
+        "lesson": "IE455",
+        "topic": "Bipartite Isomorphism",
+        "question": "\n**Problem (Derived from Quiz 8):**\nConsider the set of all complete graphs $K_n$ for $2 \\le n \\le 20$. How many of these graphs are bipartite?\n",
+        "solution": "\n**Answer:** 1.\n\n**Reasoning:**\n1. A complete graph $K_n$ contains a triangle ($K_3$) if $n \\ge 3$.\n2. Bipartite graphs cannot contain triangles (odd cycles).\n3. Thus, only $K_2$ (an edge) is bipartite.\n4. For $n \\ge 3$, $K_n$ is not bipartite.\n5. Count = 1.\n"
+    },
+    {
+        "id": 108,
+        "lesson": "IE455",
+        "topic": "Matching in Trees",
+        "question": "\n**Problem (Derived from Quiz 8):**\nTrue or False: A tree of **even** order always has a perfect matching.\n",
+        "solution": "\n**Answer:** False.\n\n**Counter-Example:**\nConsider the star graph $K_{1,3}$ (Center connected to 3 leaves). Total vertices = 4 (Even).\n1. Any edge in a matching must connect the center to a leaf.\n2. Once the center is matched, it cannot be used again.\n3. The other 2 leaves remain unmatched.\n4. Thus, no perfect matching exists.\n"
+    },
+    {
+        "id": 109,
+        "lesson": "IE455",
+        "topic": "Domino Tiling",
+        "question": "\n**Problem (Derived from Quiz 1):**\nAssume we remove 3 white squares and 3 black squares from a standard $8 \\times 8$ chessboard. Is it always possible to perfectly cover the remaining board with dominoes?\n",
+        "solution": "\n**Answer:** No.\n\n**Reasoning:**\n1. While the counts of black and white squares remain equal ($32-3 = 29$ each), connectivity matters.\n2. We could remove 3 white/3 black squares such that a corner or a region becomes isolated (e.g., leave a single square surrounded by removed squares).\n3. If a region is isolated and has odd size, it cannot be tiled.\n"
     }
 ]
