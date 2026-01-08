@@ -1,156 +1,182 @@
 [
     {
         "id": 1,
+        "lesson": "IE553",
         "topic": "Sensitivity Analysis",
         "question": "\n**Consider the LP:** Max Z = 5x\u2081 + 2x\u2082 + 3x\u2083\n**Subject to:**\n1) x\u2081 + 5x\u2082 + 2x\u2083 \u2264 30\n2) x\u2081 - 5x\u2082 - 6x\u2083 \u2264 40\nx\u2081, x\u2082, x\u2083 \u2265 0\n\n**Given:** Optimal inverse basis B\u207b\u00b9 = [[1, 0], [-1, 1]].\n**Task:** Calculate the optimal dual solution w*.",
         "solution": "\n**Formula:** w = c_B * B\u207b\u00b9\n* Basic variables: x\u2081 and s\u2082.\n* c_B = [5, 0]\n* Calculation: [5, 0] * [[1, 0], [-1, 1]] = [5, 0]\n**Answer:** w\u2081 = 5, w\u2082 = 0\n"
     },
     {
         "id": 2,
+        "lesson": "IE553",
         "topic": "Dantzig-Wolfe",
         "question": "\n**Problem:** Minimization LP.\n**Scenario:** Subproblem returns an unbounded ray d* = [3, 1]\u1d40.\n**Task:** What is the coefficient in the convexity row for the new column added to the Master Problem?\n",
         "solution": "\n**Answer:** 0\n**Explanation:** Since d* is a direction (ray), we can add any non-negative multiple of it. It does not satisfy the convexity constraint (sum = 1) like extreme points do. Thus, the coefficient is 0.\n"
     },
     {
         "id": 3,
+        "lesson": "IE553",
         "topic": "Primal-Dual Theory",
         "question": "\n**True or False:** If the Primal LP has a unique optimal solution that is degenerate, the Dual LP must have a unique optimal solution.\n",
         "solution": "\n**Answer:** False.\n**Justification:** According to the Uniqueness/Degeneracy theorem, if the Primal has a unique but degenerate solution, the Dual problem has **multiple** optimal solutions.\n"
     },
     {
         "id": 4,
+        "lesson": "IE553",
         "topic": "Dantzig-Wolfe (Initialization)",
         "question": "\n**Scenario:** You are initializing a Dantzig-Wolfe problem.\nThe Master Problem constraints are:\n$2x_1 + 4x_2 + 5x_3 + 2x_4 \\le 7$\n$\\sum \\lambda_j = 1$\n\nYou find an initial corner point $v_1 = (0, 3)$ from Block 2.\nConstraint contribution: $5(0) + 2(3) = 6$.\n\n**Question:** Is this point sufficient to start the Master Problem using only Slack variables?\n",
         "solution": "\n**Answer:** Yes.\n\n**Explanation:**\nThe resource usage of this point is 6.\nThe available resource is 7.\nSince $6 \\le 7$, the slack variable $s$ will be positive ($s = 7-6 = 1$). A valid basic feasible solution exists without needing artificial variables.\n"
     },
     {
         "id": 5,
+        "lesson": "IE553",
         "topic": "Theoretical Proof",
         "question": "\n**Prove or Disprove:**\nIf $x^*$ is an optimal solution to the LP:\n$\\min c^Tx$ s.t. $Ax \\le b$ and $Dx \\le e$\n\nAnd if $Dx^* < e$ (strictly less), then $x^*$ is also optimal for the relaxed problem:\n$\\min c^Tx$ s.t. $Ax \\le b$\n",
         "solution": "\n**Answer:** True.\n\n**Proof (KKT Approach):**\n1. By Complementary Slackness, if $Dx^* < e$, the corresponding dual variables $\\mu$ must be **0**.\n2. The stationarity condition for the original problem is $c + A^T\\lambda + D^T\\mu = 0$.\n3. Since $\\mu=0$, this reduces to $c + A^T\\lambda = 0$.\n4. This matches exactly the stationarity condition for the relaxed problem.\n5. Thus, $x^*$ satisfies KKT for the relaxed problem.\n"
     },
     {
         "id": 6,
+        "lesson": "IE553",
         "topic": "Sensitivity Analysis",
         "question": "\n**Given:** A Maximization problem where $x_2$ is non-basic.\nOptimal Dual $w^* = [14, 5, 1]$.\nColumn for $x_2$ is $A_2 = [2, 1, 4]^T$.\nCurrent objective coefficient $c_2 = 3$.\n\n**Task:** Calculate the Reduced Cost of $x_2$. Is it attractive to enter?\n",
         "solution": "\n**Calculation:**\nReduced Cost $(z_2 - c_2) = w^* A_2 - c_2$\n$= (14(2) + 5(1) + 1(4)) - 3$\n$= (28 + 5 + 4) - 3$\n$= 37 - 3 = 34$\n\n**Conclusion:**\nThe reduced cost is **34** (positive).\nSince this is a Maximization problem, a positive $(z_j - c_j)$ means the variable is **NOT** attractive. We are already making more 'value' ($z$) than the cost ($c$).\n*(Note: Some texts define it as $c_j - z_j$, in which case it would be -34, still unattractive).*\n"
     },
     {
         "id": 7,
+        "lesson": "IE553",
         "topic": "Dantzig-Wolfe (Bounds)",
         "question": "\n**Problem:** You are maximizing $Z$ using Dantzig-Wolfe.\nAt the current iteration:\n1. The Master Problem optimal value is $Z_{MP} = 100$.\n2. The current dual solution is $(\\pi, \\alpha)$.\n3. You solve the subproblem and find an optimal solution $x_{sub}$ with objective value $Z_{sub} = 20$.\n4. The value of the dual variable for the convexity constraint is $\\alpha = 15$.\n\n**Task:** Determine the **Upper Bound** on the true optimal objective value $Z^*$.\n",
         "solution": "\n**Answer:** 105\n\n**Explanation:**\nFor a Maximization problem:\n* **Lower Bound:** The current Master Problem value ($Z_{MP} = 100$).\n* **Upper Bound:** $Z_{MP} + \\text{Reduced Cost of the new column}$.\n\nFirst, calculate the Reduced Cost:\n$\\text{Reduced Cost} = Z_{sub} - \\alpha = 20 - 15 = 5$.\n\nUpper Bound = $100 + 5 = 105$.\n*(Note: If the reduced cost were \\le 0, we would be optimal.)*\n"
     },
     {
         "id": 8,
+        "lesson": "IE553",
         "topic": "Sensitivity Analysis (Structural)",
         "question": "\n**Scenario:** You have an optimal basis $B$.\nYou want to change a constraint coefficient $a_{ij}$ for a variable $x_j$.\n\n**Question:** Why is the sensitivity analysis much harder if $x_j$ is a **Basic** variable compared to a **Non-Basic** variable?\n",
         "solution": "\n**Answer:** It alters the Basis Matrix $B$ itself.\n\n**Explanation:**\n* **If $x_j$ is Non-Basic:** Only its column in $N$ changes. We essentially just check if its new reduced cost remains correct. $B^{-1}$ stays the same.\n* **If $x_j$ is Basic:** The column is inside $B$. Changing it changes $B$, which changes $B^{-1}$. Since $B^{-1}$ affects **every** calculation in the tableau (RHS, shadow prices, all reduced costs), the entire tableau structure is disrupted. We usually cannot use simple range formulas and may need to re-invert or use the Sherman-Morrison formula.\n"
     },
     {
         "id": 9,
+        "lesson": "IE553",
         "topic": "Primal-Dual Theory",
         "question": "\n**Statement:** \"If the Dual LP has alternative optimal solutions, then the Primal LP must be degenerate.\"\n\n**Task:** Prove this statement is True using Complementary Slackness.\n",
         "solution": "\n**Proof:**\n1. Let $w^1$ and $w^2$ be two distinct optimal dual solutions.\n2. Their convex combination $w^* = 0.5w^1 + 0.5w^2$ is also optimal.\n3. Since $w^1 \\neq w^2$, there exists some index (constraint) where the dual constraints are \"looser\" for the mix than for the individual corners, or simply that the set of binding dual constraints is smaller than the number of variables.\n4. More formally: If the Dual has multiple solutions, the Dual feasible region's optimal face has dimension $\\ge 1$.\n5. By Strict Complementary Slackness, if the Dual has \"extra\" freedom (variables not fixed to zero/boundaries), the corresponding Primal variables must be fixed to zero.\n6. This forces \"extra\" zeros in the Primal solution beyond the standard $n-m$ non-basics, satisfying the definition of Primal Degeneracy.\n"
     },
     {
         "id": 10,
+        "lesson": "IE553",
         "topic": "Dantzig-Wolfe (Unboundedness)",
         "question": "\n**True or False:**\nIn the Dantzig-Wolfe algorithm, if the **Subproblem** is unbounded (returns a ray), then the **Original Master Problem** must also be unbounded.\n",
         "solution": "\n**Answer:** False.\n\n**Explanation:**\nThe Subproblem ignores the coupling constraints (A matrices). It only checks $x \\in X$.\n* It is possible that $x$ can go to infinity inside the region $X$ (Subproblem unbounded).\n* However, the **Coupling Constraints** in the Master Problem might \"cut off\" that ray.\n* When we add the ray to the Master Problem, the Master Problem will assign a finite weight ($\\mu$) to it, limited by the coupling constraints. The original problem is only unbounded if the Master Problem *also* becomes unbounded after adding the ray.\n"
     },
     {
         "id": 11,
+        "lesson": "IE553",
         "topic": "Strict Complementary Slackness",
         "question": "\n**Problem:**\nYou have 3 distinct optimal primal-dual pairs: $(x^1, w^1), (x^2, w^2), (x^3, w^3)$.\nNone of them individually satisfy Strict Complementary Slackness (SCS) for all indices.\n\n**Task:** How can you mathematically generate a single pair $(x^*, w^*)$ that is guaranteed to satisfy SCS for the entire problem?\n",
         "solution": "\n**Method:** Barycenter (Averaging)\n\n**Formula:**\n$x^* = \\frac{1}{3}(x^1 + x^2 + x^3)$\n$w^* = \\frac{1}{3}(w^1 + w^2 + w^3)$\n\n**Why it works:**\nFor any index $j$, if *any* of the individual solutions has a strict inequality (e.g., $x_j^k > 0$), the average $x_j^*$ will be positive because all $x \\ge 0$. The average \"accumulates\" the positivity of all individual solutions. Since an SCS solution is known to exist (Goldman-Tucker Theorem), the convex combination of all BFS optima will yield it.\n"
     },
     {
         "id": 12,
+        "lesson": "IE553",
         "topic": "Sensitivity Analysis (Matrix)",
         "question": "\n**Problem:**\nConsider an LP with optimal basis $B$. You want to check if the current basis remains optimal if the objective coefficient of a **basic** variable $x_k$ changes by $\\Delta$.\n\n**Task:**\nExplain why you cannot simply check $z_k - c_k \\ge 0$. What specific formula must be satisfied for *all* non-basic variables $j$?\n",
         "solution": "\n**Answer:**\nChanging $c_k$ (where $x_k$ is basic) changes the dual vector $w = c_B B^{-1}$.\nSince $w$ changes, the reduced cost of **every** non-basic variable potentially changes.\n\n**Formula:**\nYou must check:\n$(z_j - c_j)_{new} = (w_{old} + \\Delta \\cdot (B^{-1})_{row \\ k}) A_j - c_j \\ge 0$\nfor **all** non-basic variables $j$. The range is determined by the tightest of these constraints.\n"
     },
     {
         "id": 13,
+        "lesson": "IE553",
         "topic": "Dantzig-Wolfe (Block Structure)",
         "question": "\n**Scenario:**\nYou are solving a problem with 2 blocks using Dantzig-Wolfe.\n* Block 1 generates a proposal $v_1$ with profit 10 and resource usage 4.\n* Block 2 generates a proposal $v_2$ with profit 12 and resource usage 6.\n\nThe Master Problem has a single coupling constraint with capacity 8.\n\n**Question:**\nCan the Master Problem simply select $v_1$ and $v_2$ both at full strength? If not, how does it mathematically combine them?\n",
         "solution": "\n**Answer:** No.\n\n**Explanation:**\nTotal resource usage = $4 + 6 = 10$, which exceeds capacity 8.\nThe Master Problem will find weights $\\lambda_{1}$ and $\\lambda_{2}$ such that:\n1. $4\\lambda_{1} + 6\\lambda_{2} \\le 8$\n2. $\\lambda_{1} = 1$ (Convexity Block 1)\n3. $\\lambda_{2} = 1$ (Convexity Block 2)\n\nSince this system is infeasible with $\\lambda=1$, the Master Problem cannot pick both fully. It implies the current set of columns might be insufficient to find a feasible solution if these are the only options, or it must use slack/artificial variables if available. In a real iteration, it would mix these with the 'zero' solution or other columns.\n"
     },
     {
         "id": 14,
+        "lesson": "IE553",
         "topic": "Primal-Dual Theory (Strict Slackness)",
         "question": "\n**Problem:**\nLet $x^*$ and $w^*$ be a primal-dual optimal pair.\nSuppose for a specific variable $x_j$, we have $x_j^* = 0$ and the corresponding reduced cost is also 0 (i.e., $z_j - c_j = 0$).\n\n**Task:**\nDoes this pair satisfy **Strict** Complementary Slackness? What does this imply about the solution space?\n",
         "solution": "\n**Answer:** No.\n\n**Explanation:**\nStrict Complementary Slackness requires that $x_j + s_j > 0$. Here, both are zero ($x_j^*=0$ and dual slack $s_j = z_j - c_j = 0$).\n\n**Implication:**\nThis indicates **Degeneracy**. specifically, it usually implies that there are alternative optimal solutions (either in the primal or the dual) that could be pivoted to. This specific pair sits on the boundary where strictness fails.\n"
     },
     {
         "id": 15,
+        "lesson": "IE553",
         "topic": "Sensitivity Analysis (RHS)",
         "question": "\n**Problem:**\nYou are given the optimal inverse basis $B^{-1} = \\begin{bmatrix} 2 & -1 \\\\ -1 & 1 \\end{bmatrix}$ and the original RHS $b = \\begin{bmatrix} 10 \\\\ 8 \\end{bmatrix}$.\n\n**Task:**\nCalculate the current values of the basic variables $x_B$. Then, determine how much $b_2$ can increase before the current basis becomes infeasible.\n",
         "solution": "\n**1. Current Values:**\n$x_B = B^{-1}b = \\begin{bmatrix} 2 & -1 \\\\ -1 & 1 \\end{bmatrix} \\begin{bmatrix} 10 \\\\ 8 \\end{bmatrix} = \\begin{bmatrix} 20 - 8 \\\\ -10 + 8 \\end{bmatrix} = \\begin{bmatrix} 12 \\\\ -2 \\end{bmatrix}$.\n*(Wait! The current basis is infeasible ($x_2 = -2$). If this was an optimal table provided in a problem, check for typos. Assuming standard feasibility context:)*\n\n**2. Range for $b_2$ (let $b_2 = 8 + \\Delta$):**\n$x_B(\\Delta) = \\begin{bmatrix} 2 & -1 \\\\ -1 & 1 \\end{bmatrix} \\begin{bmatrix} 10 \\\\ 8+\\Delta \\end{bmatrix} = \\begin{bmatrix} 12 - \\Delta \\\\ -2 + \\Delta \\end{bmatrix}$.\n\nFor feasibility ($x_B \\ge 0$):\n* $12 - \\Delta \\ge 0 \\implies \\Delta \\le 12$\n* $-2 + \\Delta \\ge 0 \\implies \\Delta \\ge 2$\n\n**Answer:** $b_2$ must **increase** by at least 2 units (to make $x_2 \\ge 0$) and can increase up to 12 additional units.\n"
     },
     {
         "id": 16,
+        "lesson": "IE553",
         "topic": "Dantzig-Wolfe (Initialization)",
         "question": "\n**Scenario:**\nYou are initializing a Master Problem. You cannot find any obvious feasible starting columns from the subproblems that satisfy the coupling constraint $Ax \\le b$.\n\n**Task:**\nWhat is the standard \"Phase 1\" approach to handle this in Dantzig-Wolfe?\n",
         "solution": "\n**Answer:** Add Artificial Variables.\n\n**Explanation:**\n1. Introduce artificial variables $a_i$ to the coupling constraints: $\\sum \\lambda_j (Ax_j) + a = b$.\n2. Assign a large penalty cost (Big-M) to $a$ in the Master objective.\n3. Run the Dantzig-Wolfe iterations. The high cost will force the Master Problem to request columns from the subproblems that help reduce $a$ to zero.\n4. Once $a=0$, discard it and continue with the feasible columns found.\n"
     },
     {
         "id": 17,
+        "lesson": "IE553",
         "topic": "Sensitivity Analysis (New Variable)",
         "question": "\n**Problem:**\nYou have solved a Maximization LP and found the optimal dual solution $w^* = [2, 5]$.\nManagement proposes a new activity (variable $x_{new}$) with profit $c_{new} = 20$.\nThis activity consumes 4 units of Resource 1 and 3 units of Resource 2.\n\n**Task:**\nShould this new variable enter the basis? Calculate its reduced cost.\n",
         "solution": "\n**Calculation:**\nReduced Cost $(z_{new} - c_{new}) = w^* A_{new} - c_{new}$\n$= [2, 5] \\cdot [4, 3]^T - 20$\n$= (2(4) + 5(3)) - 20$\n$= (8 + 15) - 20$\n$= 23 - 20 = 3$\n\n**Answer:**\nSince this is a Maximization problem, a positive reduced cost ($+3$) means the current basis is **still better** (the new variable \"costs\" 23 in shadow value but only returns 20 in profit). \n**No**, it should not enter. It is not profitable.\n"
     },
     {
         "id": 18,
+        "lesson": "IE553",
         "topic": "Dantzig-Wolfe (Termination)",
         "question": "\n**Scenario:**\nIn a Maximization Dantzig-Wolfe problem, you solve the Subproblem and find an optimal solution $x^*$ with objective value $Z_{sub}$.\nThe dual variable for the convexity constraint in the Master Problem is $\\alpha$.\n\n**Question:**\nWhat is the specific mathematical condition that indicates the Master Problem has found the **global optimal** solution?\n",
         "solution": "\n**Condition:** $Z_{sub} - \\alpha \\le 0$\n\n**Explanation:**\nThe term $(Z_{sub} - \\alpha)$ represents the **Reduced Cost** of the proposal generated by the subproblem.\n* If $Z_{sub} - \\alpha > 0$, the proposal is attractive and will improve the Master objective.\n* If $Z_{sub} - \\alpha \\le 0$, no proposal from the subproblem can improve the current Master solution. We stop.\n"
     },
     {
         "id": 19,
+        "lesson": "IE553",
         "topic": "Primal-Dual Theory (Infeasibility)",
         "question": "\n**Task:**\nProve the following statement using Weak Duality:\n\"If the Primal problem is **Unbounded**, then the Dual problem must be **Infeasible**.\"\n",
         "solution": "\n**Proof:**\n1. Weak Duality states that for any feasible primal $x$ and feasible dual $w$: $c^Tx \\le b^Tw$ (for Max Primal).\n2. Assume the Dual is **Feasible**. Then there exists some $w_{feas}$ such that $b^T w_{feas} = K$ (some finite number).\n3. Weak duality implies $c^Tx \\le K$ for ALL feasible primal $x$.\n4. This means the Primal objective is bounded above by $K$.\n5. However, we are given that the Primal is **Unbounded** (can go to $+\\infty$).\n6. This is a contradiction. Therefore, the assumption that the Dual is feasible must be false.\n"
     },
     {
         "id": 20,
+        "lesson": "IE553",
         "topic": "Sensitivity (Degeneracy & Shadow Prices)",
         "question": "\n**Problem:**\nYou analyze an optimal tableau and notice the solution is **Degenerate** (a basic variable has value 0).\nYour boss asks for the \"Shadow Price\" of the constraint associated with that basic variable.\n\n**Question:**\nWhy might the standard dual value $w_i$ be misleading as a \"Shadow Price\" in this specific case?\n",
         "solution": "\n**Answer:** The shadow price may not be unique or symmetric.\n\n**Explanation:**\nIn a degenerate solution, the RHS change allowable before the basis changes is **zero** in at least one direction (increase or decrease).\n* Increasing the RHS might yield a different marginal improvement than decreasing it.\n* The Dual value $w_i$ usually represents the slope on one side, but due to degeneracy, the \"true\" marginal value might be discontinuous or valid for a range of size 0.\n"
     },
     {
         "id": 21,
+        "lesson": "IE553",
         "topic": "Dantzig-Wolfe (Master Duals)",
         "question": "\n**Problem:**\nIn the Dantzig-Wolfe Master Problem, we solve for dual variables $\\pi$ (for coupling constraints) and $\\alpha$ (for convexity).\n\n**Task:**\nExplain the economic interpretation of $\\alpha$ in the context of column generation.\n",
         "solution": "\n**Answer:** $\\alpha$ represents the value of the convexity constraint $\\sum \\lambda = 1$.\n\n**Interpretation:**\nIt can be viewed as the **\"Fixed Cost\"** or **\"Entry Fee\"** of bringing a new proposal into the plan.\nFor a column to be attractive, its profit ($c_j x_j - \\pi A x_j$) must exceed this fixed threshold $\\alpha$.\nIf the Subproblem cannot generate a proposal that covers both the resource costs ($\\pi$) and this fixed entry fee ($\\alpha$), then the current mix is optimal.\n"
     },
     {
         "id": 22,
+        "lesson": "IE553",
         "topic": "Convex Analysis (Optimal Set)",
         "question": "\n**Task:**\nProve that the set of all optimal solutions to the Linear Program (Minimize $cx$ s.t. $Ax=b, x \\ge 0$) is a **convex set**.\n",
         "solution": "\n**Proof:**\n1. Let $S^*$ be the set of optimal solutions. Let $x^1, x^2 \\in S^*$. Thus $Ax^1=b, x^1\\ge 0$ and $Ax^2=b, x^2\\ge 0$, and $cx^1 = cx^2 = Z^*$ (optimal value).\n2. Consider $y = \\lambda x^1 + (1-\\lambda)x^2$ for $\\lambda \\in [0,1]$.\n3. **Feasibility:** $Ay = A(\\lambda x^1 + (1-\\lambda)x^2) = \\lambda Ax^1 + (1-\\lambda)Ax^2 = \\lambda b + (1-\\lambda)b = b$. Also $y \\ge 0$ since $x^1, x^2 \\ge 0$.\n4. **Optimality:** $cy = c(\\lambda x^1 + (1-\\lambda)x^2) = \\lambda cx^1 + (1-\\lambda)cx^2 = \\lambda Z^* + (1-\\lambda)Z^* = Z^*$.\n5. Since $y$ is feasible and yields the optimal value, $y \\in S^*$. Thus, $S^*$ is convex.\n"
     },
     {
         "id": 23,
+        "lesson": "IE553",
         "topic": "Dual Simplex",
         "question": "\n**Scenario:**\nYou have reached the optimal tableau for a Maximization problem. You then add a new constraint to the problem that cuts off the current optimal solution (the current point becomes infeasible).\n\n**Question:**\nWhich method (Primal Simplex vs. Dual Simplex) should you use to re-optimize, and why?\n",
         "solution": "\n**Answer:** Dual Simplex.\n\n**Explanation:**\n1. The current basis satisfies the optimality conditions ($z_j - c_j \\ge 0$ for Max) because we were optimal before adding the constraint. This means the solution is **Dual Feasible**.\n2. However, the new constraint is violated, meaning the slack variable for that row will be negative. The solution is **Primal Infeasible**.\n3. The Dual Simplex algorithm is designed specifically for this state: it maintains Dual Feasibility while iterating to remove Primal Infeasibility.\n"
     },
     {
         "id": 24,
+        "lesson": "IE553",
         "topic": "Theorems of the Alternatives",
         "question": "\n**Task:**\nState **Farkas' Lemma** for the system $Ax = b, x \\ge 0$. Explain what the alternative system represents intuitively.\n",
         "solution": "\n**Statement:**\nExactly one of the following two systems has a solution:\n1. $Ax = b, x \\ge 0$ (Primal feasible)\n2. $yA \\ge 0, yb < 0$ (Certificate of Infeasibility)\n\n**Intuition:**\nSystem (2) finds a linear combination of the constraints (vector $y$) such that the left side ($yA$) is non-negative, but the right side ($yb$) is strictly negative. Summing non-negative variables with non-negative weights cannot result in a negative number. Thus, if (2) exists, (1) is impossible.\n"
     },
     {
         "id": 25,
+        "lesson": "IE553",
         "topic": "Simplex Theory (Unboundedness)",
         "question": "\n**Problem:**\nIn a Maximization simplex tableau, you find a non-basic variable $x_j$ with a negative reduced cost ($c_j - z_j > 0$ or row 0 coeff $< 0$).\nHowever, looking at the column for $x_j$, every coefficient $a_{ij}$ is $\\le 0$.\n\n**Task:**\nProve rigorously that the objective function is **unbounded**.\n",
         "solution": "\n**Proof:**\n1. The basic variables are given by $x_B = B^{-1}b - B^{-1}A_j x_j$. Let $\\bar{b}$ be current RHS and $\\bar{A}_j$ be the column.\n2. Equation: $x_B = \\bar{b} - \\bar{A}_j x_j$.\n3. Since $\\bar{A}_j \\le 0$, as we increase $x_j \\to +\\infty$, the term $(-\\bar{A}_j x_j)$ is non-negative. Thus $x_B$ actually increases or stays constant; it never hits 0. The non-negativity constraints $x_B \\ge 0$ are never violated.\n4. Since the reduced cost shows $x_j$ improves the objective, and we can increase $x_j$ indefinitely, $Z \\to +\\infty$.\n"
     },
     {
         "id": 26,
+        "lesson": "IE553",
         "topic": "Polyhedral Theory (Extreme Points)",
         "question": "\n**Theorem:**\nProve that if a vector $x$ is an **extreme point** of the polyhedron $P = \\{x \\mid Ax=b, x \\ge 0\\}$, then the columns of $A$ corresponding to the strictly positive components of $x$ are **linearly independent**.\n",
         "solution": "\n**Proof by Contradiction:**\n1. Let $J = \\{j \\mid x_j > 0\\}$. Assume columns $A_j$ for $j \\in J$ are linearly dependent.\n2. Then there exists vector $d \\neq 0$ with $d_j = 0$ for $j \\notin J$ such that $Ad = 0$.\n3. Consider two points: $y^1 = x + \\epsilon d$ and $y^2 = x - \\epsilon d$.\n4. For small $\\epsilon$, both $y^1, y^2 \\ge 0$ (since we only modify positive components). Also $Ay = Ax \\pm \\epsilon Ad = b$. So both are in $P$.\n5. We can write $x = 0.5y^1 + 0.5y^2$. Since $x$ is a convex combination of two distinct points in $P$, it cannot be an extreme point. Contradiction.\n"
