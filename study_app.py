@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import json
 import os
 st.set_page_config(page_title="IE Exam Prep", layout="centered", page_icon="🎓")
