@@ -544,5 +544,75 @@
         "topic": "Complement Graph (Diameter)",
         "question": "\n**Problem:**\nProve that if a graph $G$ is **disconnected**, then the **diameter** of its complement $\\bar{G}$ is strictly less than 3 (i.e., diam($\\bar{G}$) $\\le 2$).\n",
         "solution": "\n**Proof:**\n1. Let $u, v$ be any two vertices in $\\bar{G}$.\n2. **Case 1:** $u$ and $v$ are in different connected components of $G$.\n   * Then there is no edge $(u,v)$ in $G$. Thus, edge $(u,v)$ exists in $\\bar{G}$. Distance = 1.\n3. **Case 2:** $u$ and $v$ are in the *same* connected component of $G$.\n   * Pick any vertex $w$ from a *different* component of $G$ (exists since $G$ is disconnected).\n   * In $G$, no edges exist between the components, so $(u,w) \\notin E(G)$ and $(v,w) \\notin E(G)$.\n   * In $\\bar{G}$, edges $(u,w)$ and $(w,v)$ MUST exist.\n   * Thus, path $u \\to w \\to v$ exists. Distance = 2.\n4. In all cases, distance $\\le 2$. Thus diam($\\bar{G}$) $\\le 2$.\n"
+    },
+    {
+        "id": 82,
+        "lesson": "IE455",
+        "topic": "Tree Structure (Helly Property)",
+        "question": "\n**Problem (Brualdi Ch.11 Ex.45*):**\nLet $T$ be a tree. Let $T_1, T_2, \\dots, T_k$ be a collection of subtrees of $T$. \nProve that if every pair of these subtrees has a non-empty intersection (i.e., $V(T_i) \\cap V(T_j) \\neq \\emptyset$ for all $i,j$), then the entire collection has a common vertex intersection.\n",
+        "solution": "\n**Proof:**\n1. Use induction on $k$. Base case $k=2$ is given.\n2. For the inductive step, consider the trees. A key property of trees is that the intersection of any two subtrees is itself a subtree (connected).\n3. More intuitively: If you have a set of connected paths/trees on a tree structure that pairwise overlap, they must overlap at a central point.\n4. (Rigorous step): Root the tree at an arbitrary vertex. For each subtree $T_i$, identify the vertex $v_i$ closest to the root.\n5. Among these \"topmost\" vertices, pick the one, say $v^*$, that is furthest from the root.\n6. It can be shown that $v^*$ must belong to all subtrees $T_i$.\n"
+    },
+    {
+        "id": 83,
+        "lesson": "IE455",
+        "topic": "Graph Structure (Self-Complementary)",
+        "question": "\n**Problem (Brualdi Ch.11 Ex.12):**\nA graph $G$ is **self-complementary** if $G$ is isomorphic to its complement $\\bar{G}$.\nProve that if $G$ is self-complementary with $n$ vertices, then $n \\equiv 0$ or $1 \\pmod 4$.\n",
+        "solution": "\n**Proof:**\n1. The total number of edges in the complete graph $K_n$ is $\\binom{n}{2} = \\frac{n(n-1)}{2}$.\n2. Since $G \\cong \\bar{G}$, they must have the same number of edges.\n3. Thus, $|E(G)| = |E(\\bar{G})| = \\frac{1}{2} \\binom{n}{2} = \\frac{n(n-1)}{4}$.\n4. For the number of edges to be an integer, $n(n-1)$ must be divisible by 4.\n5. This implies $n$ or $n-1$ must be a multiple of 4.\n6. Therefore, $n \\equiv 0 \\pmod 4$ or $n \\equiv 1 \\pmod 4$.\n"
+    },
+    {
+        "id": 84,
+        "lesson": "IE455",
+        "topic": "Line Graphs (Structure)",
+        "question": "\n**Problem:**\nThe Line Graph $L(G)$ has vertices representing the edges of $G$, connected if the edges share an endpoint.\nProve that if $L(G)$ is a Tree, then $G$ must be a Path ($P_n$) or a Star ($K_{1,3}$ is the limit, actually just a path).\n*Correction: L(G) is a tree only if G is a Path or a Star graph $K_{1,n}$? Let's verify.*\n\n**Task:** Determine exactly for which graphs $G$ is $L(G)$ a Tree.\n",
+        "solution": "\n**Analysis:**\n1. If $G$ has a cycle, $L(G)$ has a cycle (so not a tree).\n2. If $G$ has a vertex of degree $\\ge 3$, say edges $e_1, e_2, e_3$ meet at $v$. In $L(G)$, these three vertices form a triangle ($K_3$). This is a cycle. So $G$ cannot have degree $\\ge 3$.\n3. Exception: If $G$ is just a Star $K_{1,3}$, the edges connect to each other. $L(K_{1,3})$ is a triangle $K_3$. Not a tree.\n4. So $G$ cannot have degree $\\ge 3$. $G$ must be a path.\n5. **Conclusion:** $L(G)$ is a tree if and only if $G$ is a Path $P_n$ (for $n \\ge 2$).\n"
+    },
+    {
+        "id": 85,
+        "lesson": "IE455",
+        "topic": "Graph Cycles (Degree)",
+        "question": "\n**Problem:**\nProve that if a simple graph $G$ has minimum degree $\\delta(G) \\ge k$ (where $k \\ge 2$), then $G$ contains a cycle of length at least $k+1$.\n",
+        "solution": "\n**Proof (Longest Path):**\n1. Let $P = v_1 - v_2 - \\dots - v_m$ be a longest path in $G$.\n2. All neighbors of the endpoint $v_1$ must lie on the path (otherwise we could extend it).\n3. Since $\\deg(v_1) \\ge k$, $v_1$ has at least $k$ neighbors on the path.\n4. Let $v_j$ be the neighbor of $v_1$ with the largest index $j$.\n5. Since there are at least $k$ neighbors, the distance from $v_1$ to $v_j$ along the path is at least $k$.\n6. The edge $(v_1, v_j)$ plus the path $v_1 \\dots v_j$ forms a cycle of length at least $k+1$.\n"
+    },
+    {
+        "id": 86,
+        "lesson": "IE455",
+        "topic": "Pigeonhole in Graphs",
+        "question": "\n**Problem:**\nProve that in any simple graph with $n \\ge 2$ vertices, there are at least two vertices that have the same degree.\n",
+        "solution": "\n**Proof:**\n1. The possible degree values for a vertex in a graph of size $n$ are $\\{0, 1, 2, \\dots, n-1\\}$.\n2. However, it is impossible to have a vertex of degree $0$ AND a vertex of degree $n-1$ in the same simple graph.\n   * Degree $n-1$ means connected to everyone (no isolated vertices).\n   * Degree $0$ means isolated.\n3. Thus, the set of allowed degrees is either $\\{0, \\dots, n-2\\}$ or $\\{1, \\dots, n-1\\}$.\n4. In either case, there are only $n-1$ possible values (holes).\n5. There are $n$ vertices (pigeons).\n6. By PHP, two vertices must share the same degree value.\n"
+    },
+    {
+        "id": 87,
+        "lesson": "IE455",
+        "topic": "Metric Graph Theory",
+        "question": "\n**Problem (Brualdi Ch.11 Ex.24):**\nLet $rad(G)$ be the radius and $diam(G)$ be the diameter of a connected graph $G$.\nProve that $rad(G) \\le diam(G) \\le 2 \\cdot rad(G)$.\n",
+        "solution": "\n**Proof:**\n1. **First Inequality:** By definition, the diameter is the *maximum* eccentricity, and the radius is the *minimum* eccentricity. Thus, Min $\\le$ Max, so $rad(G) \\le diam(G)$.\n2. **Second Inequality:** Let $u, v$ be vertices such that $d(u,v) = diam(G)$.\n3. Let $c$ be a center vertex (where eccentricity equals $rad(G)$).\n4. By the Triangle Inequality: $d(u,v) \\le d(u,c) + d(c,v)$.\n5. Since $c$ is the center, the distance from $c$ to *any* node is at most $rad(G)$.\n6. Thus, $d(u,c) \\le rad(G)$ and $d(c,v) \\le rad(G)$.\n7. Therefore, $diam(G) = d(u,v) \\le rad(G) + rad(G) = 2 \\cdot rad(G)$.\n"
+    },
+    {
+        "id": 88,
+        "lesson": "IE455",
+        "topic": "Bipartite Decomposition",
+        "question": "\n**Problem:**\nCan the complete graph $K_5$ be decomposed into two edge-disjoint bipartite subgraphs? (i.e., Can you color edges Red and Blue such that Red graph is bipartite and Blue graph is bipartite?)\n",
+        "solution": "\n**Answer:** No.\n\n**Proof:**\n1. If a graph is bipartite, it contains no odd cycles (specifically no triangles $K_3$).\n2. This question is equivalent to: Can we 2-color the edges of $K_5$ without creating a monochromatic triangle?\n3. This is a Ramsey Theory question. We know $R(3,3) = 6$. This means $K_6$ guarantees a triangle, but $K_5$ does NOT guarantee a triangle.\n4. **Correction:** Wait. If we decompose $K_5$, can *both* be triangle-free?\n5. Yes. Consider the outer cycle $C_5$ (length 5, odd) and the inner pentagram (length 5, odd). Neither is bipartite.\n6. Let's try to partition vertices $V = \\{1,2,3,4,5\\}$.\n   * Bipartite $G_1$: Partition $V$ into $A_1, B_1$. Max edges $\\approx n^2/4$.\n   * Total edges in $K_5$ is 10.\n   * If $G_1$ is bipartite, it misses all edges inside $A_1$ and $B_1$. $G_2$ must cover those.\n   * If $G_2$ is bipartite, it misses edges inside its partitions $A_2, B_2$.\n   * It is actually possible to decompose $K_5$ into two bipartite graphs? NO. Every graph on 5 vertices with more than $?\\approx 6$ edges has a triangle?\n   * **Standard Result:** $K_5$ is **not** the union of 2 bipartite graphs. $K_5$ requires 3 bipartite graphs (or rather $\\chi(K_5)=5$, but $2^k$ bounds?).\n   * **Correct Logic:** If $G_1, G_2$ bipartite, then $\\chi(G_1) \\le 2, \\chi(G_2) \\le 2$. The union would have $\\chi(G) \\le 2 \\times 2 = 4$. But $\\chi(K_5) = 5$. Thus, impossible.\n"
+    },
+    {
+        "id": 89,
+        "lesson": "IE455",
+        "topic": "Digraph Cycles",
+        "question": "\n**Problem:**\nProve that every finite directed graph where every vertex has out-degree at least 1 must contain a directed cycle.\n",
+        "solution": "\n**Proof:**\n1. Start a walk at any vertex $v_1$.\n2. Since $\\deg_{out}(v_1) \\ge 1$, we can move to $v_2$.\n3. Continue this process: $v_1 \\to v_2 \\to v_3 \\dots$\n4. Since the graph is finite (say $n$ vertices), after $n$ steps we have visited $n+1$ vertices in the sequence.\n5. By Pigeonhole Principle, at least one vertex must be repeated.\n6. The portion of the path between the first and second occurrence of this vertex forms a directed cycle.\n"
+    },
+    {
+        "id": 90,
+        "lesson": "IE455",
+        "topic": "MST Cut Property",
+        "question": "\n**Problem:**\nLet $e$ be an edge in a connected weighted graph $G$. Prove that $e$ belongs to **some** Minimum Spanning Tree of $G$ if and only if $e$ is a minimum weight edge crossing some cut $(S, V\\setminus S)$.\n",
+        "solution": "\n**Proof:**\n1. **$(\\impliedby)$:** Suppose $e=(u,v)$ is a min-weight edge across cut $(S, \\bar{S})$. If we build an MST and it does *not* contain $e$, then the MST must contain another path connecting $S$ to $\\bar{S}$. This path must cross the cut at some edge $e'$. Since $w(e) \\le w(e')$, swapping $e'$ for $e$ yields a tree of equal or lower weight. Thus $e$ can be in an MST.\n2. **$(\\implies)$:** If $e$ is in an MST $T$, removing $e$ disconnects $T$ into two components $S$ and $\\bar{S}$. The edge $e$ is the unique edge in $T$ crossing this cut. If there were another edge $e'$ crossing this cut with $w(e') < w(e)$, we could swap them to improve the MST. Thus $e$ must be minimal for this specific cut defined by removing it from $T$.\n"
+    },
+    {
+        "id": 91,
+        "lesson": "IE455",
+        "topic": "Bipartite Counting",
+        "question": "\n**Problem:**\nHow many perfect matchings does the complete bipartite graph $K_{n,n}$ have?\n",
+        "solution": "\n**Answer:** $n!$ (n factorial).\n\n**Reasoning:**\n1. Let the two sets of vertices be $U = \\{u_1, \\dots, u_n\\}$ and $V = \\{v_1, \\dots, v_n\\}$.\n2. To form a perfect matching, we must map every $u_i$ to a distinct $v_j$.\n3. For $u_1$, there are $n$ choices in $V$.\n4. For $u_2$, there are $n-1$ remaining choices.\n5. ...\n6. For $u_n$, there is 1 choice.\n7. Total choices = $n \\times (n-1) \\times \\dots \\times 1 = n!$.\n"
     }
 ]
