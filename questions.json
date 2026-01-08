@@ -740,5 +740,75 @@
         "topic": "Domino Tiling",
         "question": "\n**Problem (Derived from Quiz 1):**\nAssume we remove 3 white squares and 3 black squares from a standard $8 \\times 8$ chessboard. Is it always possible to perfectly cover the remaining board with dominoes?\n",
         "solution": "\n**Answer:** No.\n\n**Reasoning:**\n1. While the counts of black and white squares remain equal ($32-3 = 29$ each), connectivity matters.\n2. We could remove 3 white/3 black squares such that a corner or a region becomes isolated (e.g., leave a single square surrounded by removed squares).\n3. If a region is isolated and has odd size, it cannot be tiled.\n"
+    },
+    {
+        "id": 110,
+        "lesson": "IE553",
+        "topic": "Dual Simplex (Pivot Selection)",
+        "question": "\n**Problem:**\nConsider the following Simplex tableau for a **Minimization** problem (Optimal but Infeasible):\n\n| BV | Z | x1 | x2 | x3 | x4 | RHS |\n|---|---|---|---|---|---|---|\n| Z | 1 | 0 | 4 | 0 | 6 | 100 |\n| x1| 0 | 1 | -2 | 0 | 1 | 5 |\n| x3| 0 | 0 | -3 | 1 | -2 | -6 |\n\n**Task:**\nPerform the Dual Simplex Ratio Test. Which variable leaves the basis, and which variable enters?\n",
+        "solution": "\n**1. Leaving Variable:**\nIdentify basic variable with most negative RHS. \n$x_3$ has RHS = -6. Thus, **$x_3$ leaves**.\n\n**2. Ratio Test (Entries):**\nLook at row $x_3$. The non-basic variables are $x_2$ and $x_4$.\nCoefficients in $x_3$-row: $a_{32} = -3$, $a_{34} = -2$.\nOnly consider negative coefficients.\n\n**3. Ratios (Minimization):**\nRatio = $|(z_j - c_j) / a_{rj}| = |\\text{Row 0 coeff} / \\text{Row k coeff}|$.\n* For $x_2$: $|4 / -3| = 1.33$\n* For $x_4$: $|6 / -2| = 3$\n\n**4. Decision:**\nMinimum ratio is 1.33 ($x_2$).\n**Answer:** $x_3$ leaves, $x_2$ enters.\n"
+    },
+    {
+        "id": 111,
+        "lesson": "IE553",
+        "topic": "Big M Method (Setup)",
+        "question": "\n**Problem:**\nMinimize $Z = 3x_1 + x_2$.\nConstraint: $x_1 + x_2 \\ge 4$.\n\n**Task:**\nConvert this to standard form using an artificial variable $a_1$ and the Big M method. Express the objective function in terms of non-basic variables ($x_1, x_2, e_1$) to start the tableau.\n",
+        "solution": "\n**1. Standard Form:**\n$x_1 + x_2 - e_1 + a_1 = 4$\nObjective: $\\min Z = 3x_1 + x_2 + M a_1$\n\n**2. Substitution:**\nIsolate $a_1$ from constraint: $a_1 = 4 - x_1 - x_2 + e_1$.\nSubstitute into Z:\n$Z = 3x_1 + x_2 + M(4 - x_1 - x_2 + e_1)$\n\n**3. Rearrange:**\n$Z = 4M + (3 - M)x_1 + (1 - M)x_2 + M e_1$\n\n**Answer (Row 0 coeffs):**\n$x_1: (M - 3)$, $x_2: (M - 1)$, $e_1: -M$, $RHS: 4M$.\n*(Note: Tableau usually stores $c_j - z_j$ or $z_j - c_j$. Ideally, $x_1$ has coeff $3-M$ if minimizing).*\n"
+    },
+    {
+        "id": 112,
+        "lesson": "IE553",
+        "topic": "Two-Phase Method (Infeasibility)",
+        "question": "\n**Problem:**\nYou finish Phase 1 of the Two-Phase Simplex method (Minimizing sum of artificials).\nThe optimal Phase 1 tableau has an objective value $W^* = 2$.\nOne artificial variable $a_1$ is still in the basis with value 2.\n\n**Task:**\nWhat does this imply about the original LP problem?\n",
+        "solution": "\n**Answer:** The original problem is **Infeasible**.\n\n**Explanation:**\nPhase 1 minimizes the sum of artificial variables. If the minimum sum ($W^*$) is strictly greater than 0, it means we cannot find a solution where all artificial variables are zero. Since artificial variables must be zero for a valid solution to the original constraints, no feasible solution exists.\n"
+    },
+    {
+        "id": 113,
+        "lesson": "IE553",
+        "topic": "Dantzig-Wolfe (Subproblem Formulation)",
+        "question": "\n**Problem:**\nMaster Problem (Max Z) has current dual variables $\\pi = [10, 5]$ corresponding to the two coupling constraints.\nWe are solving the subproblem for Block 1.\nBlock 1 constraints: $x_1 + x_2 \\le 4, x \\ge 0$.\nCoupling contribution of Block 1: $A_1 = \\begin{bmatrix} 2 & 1 \\\\ 1 & 3 \\end{bmatrix}$ (Coeffs for $x_1, x_2$).\nOriginal objective coeffs for Block 1: $c_1 = [30, 40]$.\n\n**Task:**\nWrite the objective function for the Block 1 Subproblem.\n",
+        "solution": "\n**Formula:** Max $(c_1 - \\pi A_1)x$.\n\n**Calculation:**\n$\\pi A_1 = [10, 5] \\begin{bmatrix} 2 & 1 \\\\ 1 & 3 \\end{bmatrix} = [10(2)+5(1), \\; 10(1)+5(3)] = [25, 25]$.\n\nNew Costs $\\bar{c} = c_1 - \\pi A_1 = [30, 40] - [25, 25] = [5, 15]$.\n\n**Answer:** Max $Z_{sub} = 5x_1 + 15x_2$\nSubject to $x_1 + x_2 \\le 4, x \\ge 0$.\n"
+    },
+    {
+        "id": 114,
+        "lesson": "IE553",
+        "topic": "Dantzig-Wolfe (Master Column)",
+        "question": "\n**Problem:**\nUsing the previous question's subproblem ($Z_{sub} = 5x_1 + 15x_2$ s.t. $x_1+x_2 \\le 4$), the optimal solution is clearly $x^* = (0, 4)$ with value $60$.\nThe coupling matrix was $A_1 = \\begin{bmatrix} 2 & 1 \\\\ 1 & 3 \\end{bmatrix}$.\n\n**Task:**\nCalculate the column vector $\\begin{bmatrix} P_{new} \\\\ 1 \\end{bmatrix}$ to be added to the Master Problem. (Recall MP has constraints $\\sum P_j \\lambda_j \\le b_0$ and $\\sum \\lambda = 1$).\n",
+        "solution": "\n**1. Calculate Resource Usage ($Ax^*$):**\n$A_1 x^* = \\begin{bmatrix} 2 & 1 \\\\ 1 & 3 \\end{bmatrix} \\begin{bmatrix} 0 \\\\ 4 \\end{bmatrix} = \\begin{bmatrix} 4 \\\\ 12 \\end{bmatrix}$.\n\n**2. Form Column:**\nThe Master Problem column consists of the resource usage followed by the convexity coefficient (1).\n\n**Answer:**\nColumn = $\\begin{bmatrix} 4 \\\\ 12 \\\\ 1 \\end{bmatrix}$\nObjective coeff in Master = Original $cx^* = 30(0) + 40(4) = 160$.\n"
+    },
+    {
+        "id": 115,
+        "lesson": "IE553",
+        "topic": "Benders Decomposition (Cut Generation)",
+        "question": "\n**Problem:**\nMinimize $Z = 5y + 3x$.\nConstraints: $2x + y \\ge 10$, $x \\ge 0, y \\ge 0$.\nMaster variable fixed at $\\bar{y} = 2$.\nSubproblem: Min $3x$ s.t. $2x \\ge 10 - \\bar{y} = 8$.\n\n**Task:**\nSolve the **Dual** of the subproblem and write the specific Benders **Optimality Cut** generated by this iteration.\n",
+        "solution": "\n**1. Primal Sub:** Min $3x$ s.t. $2x \\ge 8, x \\ge 0$.\nOptimal Primal: $x=4, Z_{sub}=12$.\n\n**2. Dual Sub:**\nMax $8u$ s.t. $2u \\le 3, u \\ge 0$.\nOptimal Dual: $u^* = 1.5$ (Binding constraint).\nDual Value = $8(1.5) = 12$. (Strong duality holds).\n\n**3. General Cut Formula:**\n$z \\ge c_y y + (b - Fy)^T u^*$\nHere: $z \\ge 5y + (10 - y)(1.5)$\n\n**Answer (Cut):**\n$z \\ge 5y + 15 - 1.5y \\implies z \\ge 3.5y + 15$.\n"
+    },
+    {
+        "id": 116,
+        "lesson": "IE553",
+        "topic": "Benders (Feasibility Cut)",
+        "question": "\n**Problem:**\nWe are using Benders to solve a problem. At iteration 2, the subproblem (for fixed $\\bar{y}$) is **Infeasible**.\nThe Dual of the subproblem is **Unbounded**.\nWe find a dual ray $v^* = [1, 2]^T$ (direction of unboundedness).\nThe RHS of the subproblem constraints (in terms of $y$) is $b - Fy = \\begin{bmatrix} 6 - y_1 \\\\ 4 - y_2 \\end{bmatrix}$.\n\n**Task:**\nWrite the Benders **Feasibility Cut**.\n",
+        "solution": "\n**Formula:** $v^{*T} (b - Fy) \\le 0$\n\n**Calculation:**\n$[1, 2] \\cdot \\begin{bmatrix} 6 - y_1 \\\\ 4 - y_2 \\end{bmatrix} \\le 0$\n$1(6 - y_1) + 2(4 - y_2) \\le 0$\n$6 - y_1 + 8 - 2y_2 \\le 0$\n$14 - y_1 - 2y_2 \\le 0$\n\n**Answer:** $y_1 + 2y_2 \\ge 14$.\n"
+    },
+    {
+        "id": 117,
+        "lesson": "IE553",
+        "topic": "Dantzig-Wolfe (Bounds Calc)",
+        "question": "\n**Problem:**\nMaximization Problem.\nCurrent Master Problem Optimal Value: $Z_{MP} = 500$.\nDual variable for convexity constraint: $\\alpha = 80$.\nSubproblem Optimization yields: $Z_{sub} = 100$.\n\n**Task:**\nCalculate the **Optimality Gap** (Upper Bound - Lower Bound).\n",
+        "solution": "\n**1. Lower Bound:**\n$LB = Z_{MP} = 500$.\n\n**2. Upper Bound:**\nFormula: $UB = Z_{MP} + (Z_{sub} - \\alpha)$.\n$(Z_{sub} - \\alpha)$ is the reduced cost.\n$UB = 500 + (100 - 80) = 520$.\n\n**3. Gap:**\n$520 - 500 = 20$.\n\n**Answer:** 20.\n"
+    },
+    {
+        "id": 118,
+        "lesson": "IE553",
+        "topic": "Sensitivity (Adding Constraint)",
+        "question": "\n**Problem:**\nOptimal Tableau (Max Z):\n$x_B = [x_1, x_2]^T = [10, 5]^T$.\nNew constraint added: $x_1 + 2x_2 \\le 18$.\n\n**Task:**\nCalculate the value of the new slack variable ($s_{new}$) and set up the new row for the Dual Simplex method.\n",
+        "solution": "\n**1. Check Violation:**\nCurrent solution: $10 + 2(5) = 20$.\n$20 \\not\\le 18$. Constraint violated.\n\n**2. Calculate Slack Value:**\n$s_{new} = RHS - LHS = 18 - 20 = -2$.\n\n**3. New Row setup:**\n$x_1 + 2x_2 + s_{new} = 18$\nSubstitute basic variables $x_1, x_2$ using their row equations from the tableau (e.g., $x_1 = 10 - \\dots$).\nHowever, the immediate starting condition for Dual Simplex is simply that the basic variable $s_{new}$ has value **-2**.\n\n**Answer:** $s_{new} = -2$.\n"
+    },
+    {
+        "id": 119,
+        "lesson": "IE553",
+        "topic": "Revised Simplex (Eta Matrix)",
+        "question": "\n**Problem:**\nCurrent Basis Inverse $B^{-1}_{old} = I$ (Identity).\nEntering variable $x_2$ has column $A_2 = [1, 2]^T$.\nLeaving variable is the 2nd basic variable (associated with 2nd column of B).\n\n**Task:**\nConstruct the Eta Matrix ($E$) required to update the basis inverse.\n",
+        "solution": "\n**Formula:**\nThe Eta matrix is Identity, but the $r$-th column (leaving position) is replaced by the eta vector $\\eta$.\n$\\eta = \\begin{bmatrix} -d_1/d_r \\\\ 1/d_r \\\\ -d_3/d_r \\end{bmatrix}$, where $d = B^{-1} A_{enter}$.\n\n**Calculation:**\nSince $B^{-1}=I$, $d = A_2 = [1, 2]^T$.\nLeaving index $r=2$. Pivot element $d_2 = 2$.\n$\\eta_1 = -d_1 / d_2 = -1/2 = -0.5$.\n$\\eta_2 = 1 / d_2 = 1/2 = 0.5$.\n\n**Answer:**\n$E = \\begin{bmatrix} 1 & -0.5 \\\\ 0 & 0.5 \\end{bmatrix}$\n*(Column 1 is Identity column, Column 2 is $\\eta$).*\n"
     }
 ]
