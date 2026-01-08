@@ -7,7 +7,7 @@ st.set_page_config(page_title="IE Exam Prep", layout="centered", page_icon="🎓
 meta_tags = """
 <head>
     <meta property="og:title" content="IE Exam Prep" />
-    <meta property="og:image" content="YOUR_IMAGE_URL_HERE" />
+    <meta property="og:image" content="https://github.com/AbdulkadirGultekin/linear-opt-study-bank/blob/main/ss.png" />
     <meta property="og:type" content="website" />
 </head>
 """
