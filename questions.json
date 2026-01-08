@@ -184,106 +184,85 @@
     {
         "id": 27,
         "lesson": "IE455",
-        "topic": "Pigeonhole Principle",
+        "topic": "Pigeonhole Principle (Divisibility)",
         "question": "\n**Problem:**\nShow that if $n+1$ distinct integers are chosen from the set $\\{1, 2, \\dots, 2n\\}$, then there must be at least one pair of integers such that one divides the other.\n",
-        "solution": "\n**Proof:**\n1. Write every chosen integer $x$ in the form $x = 2^k \\cdot m$, where $m$ is the odd part of $x$.\n2. Since $1 \\le x \\le 2n$, the odd part $m$ must be one of the $n$ odd integers $\\{1, 3, 5, \\dots, 2n-1\\}$.\n3. We have chosen $n+1$ integers, so we have $n+1$ such odd parts.\n4. By the Pigeonhole Principle, two integers must share the same odd part $m$. Let them be $x = 2^k m$ and $y = 2^j m$.\n5. Since they are distinct, $k \\neq j$. If $k < j$, then $x$ divides $y$. If $j < k$, $y$ divides $x$.\n"
+        "solution": "\n**Proof Construction:**\n1. **Define 'Odd Part':** Any positive integer $x$ can be written uniquely as $x = 2^k \\cdot m$, where $m$ is an odd integer.\n2. **Identify Holes:** In the set $\\{1, \\dots, 2n\\}$, the possible odd parts $m$ are the odd numbers $\\{1, 3, 5, \\dots, 2n-1\\}$. There are exactly $n$ such odd numbers.\n3. **Identify Pigeons:** We are choosing $n+1$ integers. Each has an odd part from the set above.\n4. **Apply PHP:** Since there are $n+1$ integers (pigeons) and only $n$ distinct odd parts (holes), by PHP, two distinct integers $x$ and $y$ must share the same odd part $m$.\n5. **Conclusion:** Let $x = 2^a \\cdot m$ and $y = 2^b \\cdot m$. Since $x \\neq y$, then $a \\neq b$. If $a < b$, then $x | y$. If $b < a$, then $y | x$. Thus, one divides the other.\n"
     },
     {
         "id": 28,
         "lesson": "IE455",
-        "topic": "Pigeonhole Principle (Ramsey)",
-        "question": "\n**Problem:**\nIn a group of 6 people, prove that there are either 3 mutual friends or 3 mutual strangers. (Assume friendship is symmetric).\n",
-        "solution": "\n**Proof:**\n1. Pick any person $A$. $A$ has relationship to the other 5 people (Friend or Stranger).\n2. By PHP, at least 3 of these 5 must fall into one category. WLOG, assume $A$ has 3 friends: $B, C, D$.\n3. Look at the relationship between $B, C, D$.\n4. If any pair among them (say $B-C$) are friends, then $A-B-C$ form a triangle of 3 friends.\n5. If **none** of them are friends, then $B, C, D$ form a triangle of 3 strangers.\n6. In either case, the condition is satisfied.\n"
+        "topic": "Graph Theory (Handshaking Application)",
+        "question": "\n**Problem:**\nA group of 15 people are at a party. Is it possible for each person to shake hands with exactly 3 other people? Prove your answer.\n",
+        "solution": "\n**Proof:**\n1. Model this as a graph where vertices = people (15) and edges = handshakes.\n2. The problem asks for a 3-regular graph on 15 vertices.\n3. **Handshaking Lemma:** $\\sum \\deg(v) = 2|E|$.\n4. Sum of degrees = $15 \\times 3 = 45$.\n5. The lemma requires this sum to be even (since $2|E|$ is always even).\n6. 45 is odd. Therefore, no such graph exists. It is impossible.\n"
     },
     {
         "id": 29,
         "lesson": "IE455",
-        "topic": "Graph Theory (Degrees)",
-        "question": "\n**Problem:**\nIs it possible to have a graph with vertices of degrees $1, 2, 2, 3, 3, 3$? Explain why or why not.\n",
-        "solution": "\n**Answer:** No.\n\n**Reason:**\nBy the **Handshaking Lemma**, the sum of degrees in any graph must be even (equal to $2 \\times |E|$).\nSum = $1 + 2 + 2 + 3 + 3 + 3 = 14$.\nThe sum is even, so Handshaking doesn't rule it out.\n\n**Second Check:** Can we construct it?\nWe have a simple graph with 6 vertices.\nWait, actually, check the number of odd-degree vertices. There are 4 odd vertices (1, 3, 3, 3). This is even, so it is theoretically possible.\n*Correction:* Let's try to draw it. Yes, it is possible. (e.g., connect the degree 3s to each other and distribute the rest). \n\n*Wait, let's look at a simpler impossible one for the exam:* \nDegrees: $1, 1, 3, 3, 3, 3$ (Sum = 14). \nConsider degrees $1, 2, 2, 3, 4$: Sum = 12. \n*Actually, the question \"Is there a simple graph with degrees 1, 1, 3, 3, 3, 3 on 6 vertices?\"*\n\n**Better Question for Exam:** Is there a simple graph on 5 vertices with degrees $1, 2, 3, 4, 5$?\n**Answer:** No. A vertex with degree 5 in a 5-vertex graph means it is connected to everyone else (and itself?), which implies loops or it's impossible since max degree in simple graph $G_n$ is $n-1 = 4$.\n"
+        "topic": "Pigeonhole Principle (Ramsey)",
+        "question": "\n**Problem:**\nProve that in any group of 6 people, there are either 3 mutual friends or 3 mutual strangers. (Standard Ramsey $R(3,3)=6$).\n",
+        "solution": "\n**Proof:**\n1. Select any person $P$. There are 5 other people.\n2. By PHP, $P$ must have the same relationship (Friend or Stranger) with at least $\\lceil 5/2 \\rceil = 3$ of them. WLOG, assume $P$ is friends with $A, B, C$.\n3. Look at the relationships between $A, B, C$.\n4. **Case 1:** If any pair among $A, B, C$ are friends (e.g., $A-B$), then $P-A-B$ form a triangle of 3 friends.\n5. **Case 2:** If NO pair among $A, B, C$ are friends, then $A, B, C$ are all strangers to each other, forming a triangle of 3 strangers.\n6. In either case, the condition is met.\n"
     },
     {
         "id": 30,
         "lesson": "IE455",
-        "topic": "Eulerian Paths",
-        "question": "\n**Theorem:**\nA connected graph $G$ has an **Eulerian Cycle** if and only if...?\n",
-        "solution": "\n**Condition:** Every vertex in $G$ has an **even degree**.\n\n*(Note: For an Eulerian **Path** but not a cycle, exactly zero or two vertices must have odd degree).*\n"
+        "topic": "Eulerian Paths (Application)",
+        "question": "\n**Problem:**\nConsider the complete graph $K_5$ (5 vertices, all connected). If we remove exactly one edge $(u,v)$, does the remaining graph have an **Eulerian Cycle**, an **Eulerian Path**, or neither?\n",
+        "solution": "\n**Analysis:**\n1. **Original Degrees:** In $K_5$, every vertex has degree 4 (even).\n2. **Remove Edge $(u,v)$:**\n   * The degrees of $u$ and $v$ decrease by 1 (becoming $4-1=3$).\n   * The degrees of the other 3 vertices remain 4.\n3. **Check Conditions:**\n   * The graph has exactly 2 vertices of odd degree ($u$ and $v$).\n   * **Euler Cycle Condition:** All degrees must be even. (Fails).\n   * **Euler Path Condition:** Exactly 0 or 2 odd degrees. (Passes).\n4. **Conclusion:** The graph has an **Eulerian Path** (starting at $u$ and ending at $v$), but no Eulerian Cycle.\n"
     },
     {
         "id": 31,
         "lesson": "IE455",
-        "topic": "Hamiltonian Cycles",
-        "question": "\n**Problem:**\nDoes the **Petersen Graph** contain a Hamiltonian Cycle?\n",
-        "solution": "\n**Answer:** No.\n\n**Explanation:**\nThe Petersen graph (10 vertices, 15 edges) is the standard counter-example for many graph properties. It has a Hamiltonian Path, but it does **not** have a Hamiltonian Cycle. This is a known result often memorized or proved by case analysis showing no 10-cycle exists.\n"
+        "topic": "Hamiltonian Cycles (Dirac's Application)",
+        "question": "\n**Problem:**\nConsider a simple graph $G$ with $n=6$ vertices. The degrees of the vertices are $3, 3, 3, 3, 3, 3$ (a 3-regular graph on 6 vertices).\nCan we guarantee this graph has a Hamiltonian Cycle using Dirac's Theorem?\n",
+        "solution": "\n**Answer:** Yes.\n\n**Application:**\n1. **Dirac's Theorem:** A simple graph with $n \\ge 3$ vertices has a Hamiltonian Cycle if every vertex has degree $\\deg(v) \\ge n/2$.\n2. **Check:** Here $n=6$, so we need $\\deg(v) \\ge 3$.\n3. The given degrees are all exactly 3.\n4. Since $3 \\ge 3$, the condition is satisfied.\n5. **Conclusion:** Yes, a Hamiltonian Cycle is guaranteed.\n"
     },
     {
         "id": 32,
         "lesson": "IE455",
-        "topic": "Bipartite Matchings",
-        "question": "\n**Problem:**\nState **Hall's Marriage Theorem** for a bipartite graph $G=(X \\cup Y, E)$ to have a matching that saturates $X$.\n",
-        "solution": "\n**Statement:**\nFor every subset $S \\subseteq X$, the size of the neighborhood of $S$ (denoted $N(S)$) must be at least the size of $S$ itself.\n$$|N(S)| \\ge |S| \\quad \\forall S \\subseteq X$$\n"
+        "topic": "Bipartite Matching (Application)",
+        "question": "\n**Problem:**\nConsider a bipartite graph with parts $X=\\{1,2,3,4\\}$ and $Y=\\{A,B,C,D\\}$.\nEdges: $1-A, 1-B, 2-A, 2-B, 3-A, 3-B, 4-A, 4-B, 4-C, 4-D$.\nDoes a matching exist that covers all vertices in $X$?\n",
+        "solution": "\n**Analysis (Hall's Condition):**\n1. Let's inspect subsets of $X$.\n2. Consider the subset $S = \\{1, 2, 3\\}$.\n3. What are the neighbors of $S$? \n   * 1 connects to A, B.\n   * 2 connects to A, B.\n   * 3 connects to A, B.\n4. $N(S) = \\{A, B\\}$.\n5. **Compare Sizes:** $|S| = 3$, but $|N(S)| = 2$.\n6. Since $|N(S)| < |S|$, Hall's condition is violated.\n7. **Conclusion:** No, it is impossible to match all vertices in $X$.\n"
     },
     {
         "id": 33,
         "lesson": "IE455",
-        "topic": "Min-Cover Max-Matching",
-        "question": "\n**Theorem (Kőnig's Theorem):**\nIn any bipartite graph, the number of edges in a maximum matching equals...?\n",
-        "solution": "\n**Answer:** ...the number of vertices in a **minimum vertex cover**.\n\n*(Note: This is the bipartite equivalent of the Max-Flow Min-Cut theorem).*\n"
+        "topic": "Stable Marriage (Algorithm)",
+        "question": "\n**Task:**\nRun the Gale-Shapley (Men Propose) algorithm for this instance:\n* Men: M1, M2. Women: W1, W2.\n* M1 Prefers: W1 > W2. M2 Prefers: W1 > W2.\n* W1 Prefers: M2 > M1. W2 Prefers: M1 > M2.\n\nWho ends up matched with whom?\n",
+        "solution": "\n**Trace:**\n1. **Round 1:**\n   * M1 proposes to W1.\n   * M2 proposes to W1.\n   * W1 receives both. She prefers M2 over M1. She holds M2, rejects M1.\n2. **Round 2:**\n   * M1 (rejected) proposes to his next choice: W2.\n   * W2 receives M1. She is free, so she holds M1.\n3. **Result:**\n   * Matches: (M1, W2) and (M2, W1).\n\n**Verification:** Is it stable? \n* M1 prefers W1, but W1 prefers her current partner M2. (No blocking pair involving W1).\n* M2 is with his top choice. Stable.\n"
     },
     {
         "id": 34,
         "lesson": "IE455",
-        "topic": "Stable Marriage",
-        "question": "\n**Problem:**\nIn the Gale-Shapley algorithm (Men propose), which side (Men or Women) gets their **optimal** valid partner?\n",
-        "solution": "\n**Answer:** The Proposers (Men).\n\n**Explanation:**\nThe algorithm produces a matching that is **Man-Optimal** (every man gets the best partner he could possibly have in any stable matching) and **Woman-Pessimal** (every woman gets the worst partner she could have in any stable matching).\n"
+        "topic": "Tree Theory (Proof)",
+        "question": "\n**Task:**\nProve that every tree $T$ with $n \\ge 2$ vertices has at least two leaves (vertices of degree 1).\n",
+        "solution": "\n**Proof:**\n1. Consider a **longest simple path** $P$ in the tree: $v_1 - v_2 - \\dots - v_k$.\n2. Look at the start vertex $v_1$. It is connected to $v_2$.\n3. Does $v_1$ have any other neighbors? \n   * If it connected to any node $v_i$ ($i > 2$) in the path, it would form a cycle (impossible in a tree).\n   * If it connected to a node *outside* the path, then we could extend the path (e.g., $v_{new} - v_1 - \\dots$), contradicting the assumption that $P$ is the *longest* path.\n4. Therefore, $v_1$ can only be connected to $v_2$. So $\\deg(v_1) = 1$.\n5. The same logic applies to the other endpoint $v_k$. Thus, both endpoints are leaves.\n"
     },
     {
         "id": 35,
         "lesson": "IE455",
-        "topic": "Trees (Cayley's Formula)",
-        "question": "\n**Calculation:**\nHow many distinct labeled spanning trees does a complete graph $K_5$ have?\n",
-        "solution": "\n**Formula:** $n^{n-2}$ (Cayley's Formula)\n\n**Calculation:**\n$n = 5$\n$5^{5-2} = 5^3 = 125$.\n"
+        "topic": "MST (Uniqueness Logic)",
+        "question": "\n**Problem:**\nYou have a connected weighted graph $G$. All edge weights are distinct (no two edges have the same cost).\nUse Kruskal's Algorithm logic to explain why the MST must be unique.\n",
+        "solution": "\n**Explanation:**\n1. Kruskal's algorithm sorts all edges by weight: $e_1 < e_2 < \\dots < e_m$.\n2. It iterates through this sorted list. For each edge $e_i$, it adds it to the MST if and only if it does not form a cycle with edges already chosen.\n3. Since the weights are distinct, the sorted order is **unique** and strict.\n4. The decision to include or discard an edge is purely deterministic based on the connectivity of the currently selected edges.\n5. Therefore, the algorithm has no choices or tie-breaks to make; it will always produce the exact same set of edges.\n"
     },
     {
         "id": 36,
         "lesson": "IE455",
-        "topic": "Trees (Properties)",
-        "question": "\n**Problem:**\nProve that adding any single edge to a Tree $T$ creates exactly one cycle.\n",
-        "solution": "\n**Proof:**\n1. In a tree $T$, there is a unique simple path between any two vertices $u$ and $v$.\n2. If we add an edge $e = (u, v)$, this edge connects the endpoints of that unique path.\n3. The path plus the new edge forms a cycle.\n4. Since the path was unique, this cycle is unique. (Any other cycle would imply a second path existed between $u$ and $v$ in the original tree, which contradicts the definition of a tree).\n"
+        "topic": "Shannon Switching Game (Strategy)",
+        "question": "\n**Problem:**\nConsider the \"Bridg-It\" game (a variant of Shannon Switching) played on a specific graph.\nGraph: Vertices $u, v$ connected by two parallel disjoint paths of length 2. (Path 1: $u-a-v$, Path 2: $u-b-v$).\nDoes Short (connect) or Cut (disconnect) have the winning strategy? Describe the first move.\n",
+        "solution": "\n**Strategy:**\nShort (Connect) moves first.\n1. **Move 1:** Short claims edge $(u,a)$.\n2. **Scenario:**\n   * If Cut removes $(a,v)$, Short claims $(u,b)$. Then Cut removes $(b,v)$. Short is blocked? Wait.\n   * Actually, let's look at the structure. This is a \"series-parallel\" graph.\n   * In this small specific graph ($u-a-v$ and $u-b-v$): It is small enough that whoever moves first wins? No.\n   * **Correct Logic:** Short needs to secure ONE path. \n   * If Short picks $(u,a)$, Cut MUST pick $(a,v)$ to block top. Then Short picks $(u,b)$ and Cut picks $(b,v)$. Short loses.\n   * **Wait!** Standard Shannon game usually allows Short to secure edges. If Short picks $(u,a)$, that edge is \"safe\". Cut cannot remove it. Cut can only remove *other* edges.\n   * With safe edges: Short picks $(u,a)$. Cut cuts $(a,v)$. Short picks $(u,b)$. Cut cuts $(b,v)$. Short fails.\n   * **Conclusion for this specific graph:** This graph is too \"thin\". It effectively consists of two paths of length 2. The \"width\" is 2, length is 2. Cut wins on this specific graph if played optimally (by cutting the symmetric edge).\n   * **Winning Condition:** Short needs a \"wider\" graph (like 2 edge-disjoint spanning trees). This graph has disjoint paths, but Cut can dismantle them faster than Short can build.\n"
     },
     {
         "id": 37,
         "lesson": "IE455",
-        "topic": "Minimum Spanning Tree",
-        "question": "\n**Problem:**\nSuppose you have a weighted graph with distinct edge weights.\nIs the Minimum Spanning Tree (MST) unique?\n",
-        "solution": "\n**Answer:** Yes.\n\n**Explanation:**\nIf edge weights are distinct, both Prim's and Kruskal's algorithms are deterministic in their choice of the next edge (there are no ties). Thus, they will always produce the exact same set of edges.\n"
+        "topic": "Digraphs (Tournament Cycles)",
+        "question": "\n**Problem:**\nProve that if a Tournament graph contains *any* cycle, it must contain a **3-cycle** (triangle).\n",
+        "solution": "\n**Proof:**\n1. Let $C$ be a cycle of minimum length $k$. Since it's a cycle, $k \\ge 3$.\n2. Assume $k > 3$ (for contradiction). Let the cycle be $v_1 \\to v_2 \\to \\dots \\to v_k \\to v_1$.\n3. Consider the edge between $v_1$ and $v_3$. (Since it's a tournament, either $v_1 \\to v_3$ or $v_3 \\to v_1$ exists).\n4. **Case 1:** If $v_3 \\to v_1$, then we have a cycle $v_1 \\to v_2 \\to v_3 \\to v_1$. This is a 3-cycle. Success.\n5. **Case 2:** If $v_1 \\to v_3$, then we can bypass $v_2$. The path $v_1 \\to v_3 \\to v_4 \\dots \\to v_1$ is a cycle of length $k-1$.\n6. This contradicts the assumption that $k$ was the *minimum* cycle length.\n7. Therefore, the minimum cycle length must be 3.\n"
     },
     {
         "id": 38,
         "lesson": "IE455",
-        "topic": "Shannon Switching Game",
-        "question": "\n**Problem:**\nIn the Shannon Switching Game on a graph $G$ with distinguished vertices $u, v$:\n* **Short** player wants to connect $u-v$.\n* **Cut** player wants to separate $u-v$.\n\nWhen does the **Short** player have a winning strategy?\n",
-        "solution": "\n**Condition:**\nThe Short player wins if and only if the graph containing the \"available\" edges contains a set of **2 disjoint spanning trees** (Lehman's Theorem) or structurally if the graph is \"rich\" enough in connectivity relative to the distance. \n*(Specifically: Short wins iff there exists a subgraph containing u and v that is the union of edge-disjoint paths... actually, the simpler theorem is: Short wins if G contains 2 edge-disjoint spanning trees? No, that's for edge-disjoint connectivity. The standard answer for introductory courses is often related to **Matroid** theory, but intuitively: Short wins if they can secure a path despite Cut's moves.)*\n\n**Standard Answer (Lehman's Theorem for Shannon Game):**\nShort wins iff there exist 2 edge-disjoint trees? (Wait, actually usually presented as: Short wins if $G$ contains a path that Cut cannot block. Usually formalized via Matroids).\n**Let's stick to the basic property:** Short wins if the length/width of the graph favors connectivity.\n"
-    },
-    {
-        "id": 39,
-        "lesson": "IE455",
-        "topic": "Digraphs (Connectivity)",
-        "question": "\n**Definition:**\nWhat is the difference between a **Weakly Connected** and a **Strongly Connected** digraph?\n",
-        "solution": "\n**Weakly Connected:** The underlying undirected graph is connected (you can reach nodes if you ignore arrow directions).\n**Strongly Connected:** For every pair of vertices $u, v$, there is a directed path from $u \\to v$ AND from $v \\to u$.\n"
-    },
-    {
-        "id": 40,
-        "lesson": "IE455",
-        "topic": "Digraphs (Tournaments)",
-        "question": "\n**Theorem:**\nProve that every Tournament (a directed graph where every pair of vertices has exactly one directed edge) has a **Hamiltonian Path**.\n",
-        "solution": "\n**Proof (Redei's Theorem):**\n1. Use induction on $n$.\n2. Base case $n=2$ is trivial ($u \\to v$).\n3. Assume true for $n$. Take a tournament of size $n+1$. Remove vertex $v$. The remaining $n$ vertices form a path $P = v_1 \\to v_2 \\to \\dots \\to v_n$.\n4. Look at the direction of edges between $v$ and this path.\n5. If $v \\to v_1$, we have $v \\to v_1 \\to \\dots$, new path starts with $v$.\n6. If $v_n \\to v$, we have $\\dots \\to v_n \\to v$, new path ends with $v$.\n7. If neither, there must be some index $i$ where $v_i \\to v$ and $v \\to v_{i+1}$. Insert $v$ there.\n"
-    },
-    {
-        "id": 41,
-        "lesson": "IE455",
-        "topic": "System of Distinct Representatives (SDR)",
-        "question": "\n**Problem:**\nYou have sets $S_1 = \\{1,2\\}, S_2 = \\{2,3\\}, S_3 = \\{1,3\\}, S_4 = \\{1,2,3\\}$.\nDoes this family have an SDR? If so, find one.\n",
-        "solution": "\n**Answer:** Yes.\n**Check Hall's Condition:** Union of any $k$ sets has size $\\ge k$. The union of all 4 sets is $\\{1,2,3\\}$ which has size 3. Wait! $4$ sets but only $3$ elements available ($1,2,3$).\n\n**Correction:**\n$|S_1 \\cup S_2 \\cup S_3 \\cup S_4| = |\\{1,2,3\\}| = 3 < 4$.\nHall's condition fails. An SDR is **impossible**.\n"
+        "topic": "Tree (Bipartite Proof)",
+        "question": "\n**Task:**\nProve that every Tree is a Bipartite Graph.\n",
+        "solution": "\n**Proof:**\n1. Pick an arbitrary root vertex $r$.\n2. Color $r$ **Red**.\n3. For every neighbor of $r$, color them **Blue**.\n4. For neighbors of those neighbors, color them **Red**.\n5. In general, color vertex $v$ based on its distance from $r$: Red if distance is even, Blue if odd.\n6. **Check for conflicts:** Can two adjacent vertices $u, v$ have the same color?\n   * If they did, they would have the same parity of distance from $r$.\n   * This would imply an odd-length cycle or two paths of different parity exist? \n   * Simpler: Trees contain no cycles. A graph is bipartite iff it contains no odd cycles. Since a tree has NO cycles (odd or even), it is automatically bipartite.\n"
     }
 ]
