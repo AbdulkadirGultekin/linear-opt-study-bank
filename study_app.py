@@ -34,6 +34,7 @@ st.markdown("""
         border-radius: 12px;
         border: 1px solid #4a4a4a;
         box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        margin-top: 20px;
         margin-bottom: 25px;
     }
     
@@ -74,13 +75,10 @@ st.markdown("""
         border-radius: 8px;
         font-weight: 600;
         height: 3rem;
+        width: 100%; /* Force buttons to fill column */
     }
 </style>
 """, unsafe_allow_html=True)
-
-# --- Header ---
-st.title("🎓 Operations Research Prep")
-st.caption("Comprehensive Exam Review • Dark Mode Edition 🌙")
 
 # --- Load Data ---
 questions = load_questions()
@@ -111,11 +109,35 @@ def toggle_solution():
 
 current_q = questions[st.session_state.current_index]
 
-# --- Progress Bar ---
+# --- Header ---
+st.title("🎓 Operations Research Prep")
 st.progress((st.session_state.current_index + 1) / len(questions))
 st.caption(f"Question {st.session_state.current_index + 1} of {len(questions)}")
 
-# --- The Flashcard ---
+# --- CONTROLS (Moved to TOP to fix layout shift) ---
+st.markdown("###") # Spacer
+col1, col2, col3 = st.columns([1, 2, 1])
+
+with col1:
+    if st.button("⬅️ Previous"):
+        prev_question()
+        st.rerun()
+
+with col2:
+    # Toggle button state/text
+    btn_text = "🙈 Hide Solution" if st.session_state.show_solution else "👁️ Reveal Solution"
+    btn_type = "primary" if not st.session_state.show_solution else "secondary"
+    
+    if st.button(btn_text, type=btn_type):
+        toggle_solution()
+        st.rerun()
+
+with col3:
+    if st.button("Next ➡️"):
+        next_question()
+        st.rerun()
+
+# --- The Flashcard (Content) ---
 with st.container():
     st.markdown(f"""<div class="question-card">
 <div class="topic-badge">{current_q.get('topic', 'General')}</div>
@@ -124,23 +146,7 @@ with st.container():
 </div>
 </div>""", unsafe_allow_html=True)
 
-# --- Controls ---
-col1, col2, col3 = st.columns([1, 2, 1])
-with col1:
-    if st.button("⬅️ Previous", use_container_width=True):
-        prev_question()
-        st.rerun()
-with col2:
-    label = "🙈 Hide Solution" if st.session_state.show_solution else "👁️ Reveal Solution"
-    if st.button(label, type="primary", use_container_width=True):
-        toggle_solution()
-        st.rerun()
-with col3:
-    if st.button("Next ➡️", use_container_width=True):
-        next_question()
-        st.rerun()
-
-# --- Solution Reveal ---
+# --- Solution Reveal (Appears Below) ---
 if st.session_state.show_solution:
     st.markdown("---")
     st.success(current_q["solution"])
