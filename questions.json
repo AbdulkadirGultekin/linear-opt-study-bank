@@ -404,5 +404,75 @@
         "topic": "Pigeonhole Principle (Sums)",
         "question": "\n**Problem (Brualdi Ch.2 Ex.9):**\nIn a room of 10 people (ages 1 to 60), prove one can find two disjoint groups of people with the same age sum.\n",
         "solution": "\n**Proof:**\n1. Calculate max possible sum for a group. Max sum $\\approx 60 \\times 10 = 600$ (rough upper bound, actually sum of 10 largest distinct integers is less).\n2. Number of possible subsets (groups) is $2^{10} - 1 = 1023$ (excluding empty).\n3. Possible sums range from roughly 1 to ~600.\n4. Since $1023$ (subsets) > $600$ (sums), by PHP, two different subsets $A$ and $B$ have the same sum.\n5. If $A$ and $B$ overlap, remove common members. The remaining sets $A \\setminus B$ and $B \\setminus A$ are disjoint and still have equal sums.\n"
+    },
+    {
+        "id": 62,
+        "lesson": "IE455",
+        "topic": "Graph Theory (Connectivity)",
+        "question": "\n**Problem (Brualdi Ch.11 Ex.7):**\nProve that if a simple graph $G$ is disconnected, then its complement $\\bar{G}$ must be connected.\n*(The complement $\\bar{G}$ has the same vertices as $G$, but edges exist in $\\bar{G}$ iff they do NOT exist in $G$).*\n",
+        "solution": "\n**Proof:**\n1. Let $u$ and $v$ be any two distinct vertices in $\\bar{G}$.\n2. **Case 1:** If $u$ and $v$ are NOT connected in $G$ (they are in different components of $G$), then by definition, the edge $(u,v)$ exists in $\\bar{G}$. Path length = 1.\n3. **Case 2:** If $u$ and $v$ ARE connected in $G$ (same component), pick a vertex $w$ from a different component of $G$ (since $G$ is disconnected, $w$ exists).\n4. In $G$, there are no edges $(u,w)$ and $(v,w)$.\n5. Therefore, in $\\bar{G}$, edges $(u,w)$ and $(w,v)$ both exist.\n6. Thus, $u \\to w \\to v$ is a path in $\\bar{G}$.\n7. Since any pair $u,v$ is connected, $\\bar{G}$ is connected.\n"
+    },
+    {
+        "id": 63,
+        "lesson": "IE455",
+        "topic": "Graph Theory (Isomorphism)",
+        "question": "\n**Problem:**\nTwo graphs $G_1$ and $G_2$ both have 6 vertices and 9 edges. $G_1$ is a 3-regular graph (Prism graph). $G_2$ consists of two disjoint triangles ($K_3 \\cup K_3$).\nAre $G_1$ and $G_2$ isomorphic? Prove why or why not using **invariants**.\n",
+        "solution": "\n**Answer:** No.\n\n**Proof using Connectivity:**\n1. **Check Connectivity:** \n   * $G_1$ (3-regular on 6 vertices, like a hexagon with cross bars) is **Connected**.\n   * $G_2$ ($K_3 \\cup K_3$) is **Disconnected** (it has 2 components).\n2. Connectivity is an isomorphism invariant. If $G_1 \\cong G_2$, they must both be connected or both disconnected.\n3. Since they differ, they are not isomorphic.\n*(Alternatively: Check cycles. $G_2$ has only 3-cycles. $G_1$ might have 4-cycles).*\n"
+    },
+    {
+        "id": 64,
+        "lesson": "IE455",
+        "topic": "Matrices in Graphs (Walks)",
+        "question": "\n**Problem (Brualdi Ch.11 Ex.52):**\nLet $A$ be the adjacency matrix of a simple graph $G$. What is the combinatorial meaning of the entry $(i, j)$ in the matrix $A^k$ (A raised to the power k)?\n",
+        "solution": "\n**Answer:**\nThe entry $(A^k)_{ij}$ equals the number of distinct **walks** of length exactly $k$ starting at vertex $i$ and ending at vertex $j$.\n"
+    },
+    {
+        "id": 65,
+        "lesson": "IE455",
+        "topic": "Trees (Center)",
+        "question": "\n**Problem (Brualdi Ch.11 Ex.21):**\nThe **center** of a tree is the vertex (or vertices) that minimizes the maximum distance to any other node (minimax distance). \nProve that the center of a tree consists of either a **single vertex** or **two adjacent vertices**.\n",
+        "solution": "\n**Proof Strategy:**\n1. Repeatedly remove all leaf nodes (vertices of degree 1) from the tree simultaneously.\n2. Removing leaves does not change the center of the tree (since the center must be 'inside' the path connecting the most distant leaves).\n3. Since the tree is finite, this process must terminate.\n4. If we are left with 1 vertex, that is the unique center.\n5. If we are left with 2 vertices (an edge), they are the bi-centers.\n6. We cannot be left with more, because removing leaves from a tree with $\\ge 3$ nodes (path $u-v-w$) would reduce it further.\n"
+    },
+    {
+        "id": 66,
+        "lesson": "IE455",
+        "topic": "Eulerian Graphs (Decomposition)",
+        "question": "\n**Problem:**\nLet $G$ be a connected graph with exactly 4 vertices of odd degree. Explain how you can trace the entire graph using exactly **2 trails** (pen lifts).\n",
+        "solution": "\n**Explanation:**\n1. A graph with $2k$ odd vertices requires $k$ open trails to cover all edges.\n2. Here, odd vertices = 4, so $k=2$. We need 2 trails.\n3. **Construction:** \n   * Add a \"phantom\" edge between two of the odd vertices, say $u$ and $v$.\n   * Now only 2 odd vertices remain. This modified graph has an Eulerian Path.\n   * Remove the phantom edge. The Eulerian path breaks into 2 trails.\n   * **Result:** You start at one odd vertex, end at another (Trail 1). Jump to the third odd vertex, end at the fourth (Trail 2).\n"
+    },
+    {
+        "id": 67,
+        "lesson": "IE455",
+        "topic": "Network Flows (Conservation)",
+        "question": "\n**Problem (Brualdi Ch.12 Basic):**\nIn a network $N$, let $(X, \\bar{X})$ be a cut where $s \\in X$ and $t \\in \\bar{X}$.\nLet $f$ be any valid flow.\nProve that the **net flow** across the cut is equal to the value of the flow, $val(f)$.\n",
+        "solution": "\n**Proof:**\n1. Sum the flow conservation equations for all vertices $v \\in X$: $\\sum_{v \\in X} (\\text{flow out of } v - \\text{flow into } v)$.\n2. For any edge $(u,w)$ where both $u,w \\in X$, the flow $f(u,w)$ is counted once as positive (out of $u$) and once as negative (into $w$). These cancel out.\n3. The only terms remaining are:\n   * Edges leaving $X$ (going to $\\bar{X}$). (Positive)\n   * Edges entering $X$ (coming from $\\bar{X}$). (Negative)\n   * The source $s$ (which has no 'in' flow from balance eq, but generates $val(f)$).\n4. Thus, $\\sum (\\text{flow across cut}) = \\text{Flow out of } s = val(f)$.\n"
+    },
+    {
+        "id": 68,
+        "lesson": "IE455",
+        "topic": "Hamiltonian (Bipartite Condition)",
+        "question": "\n**Problem:**\nLet $G=(X,Y, E)$ be a bipartite graph with $|X| = 5$ and $|Y| = 6$. \nCan $G$ contain a Hamiltonian Cycle? Explain.\n",
+        "solution": "\n**Answer:** No.\n\n**Reason:**\n1. A Hamiltonian cycle is a closed loop passing through every vertex exactly once.\n2. In a bipartite graph, the path must alternate $X \\to Y \\to X \\to Y \\dots$\n3. To close the loop back to the start, the path must have even length and contain an equal number of vertices from $X$ and $Y$.\n4. Here, $|X| \\neq |Y|$ ($5 \\neq 6$).\n5. Thus, it is impossible to visit all 11 vertices in an alternating cycle.\n"
+    },
+    {
+        "id": 69,
+        "lesson": "IE455",
+        "topic": "Graph Theory (Cut Edges)",
+        "question": "\n**Problem (Brualdi Ch.11 Ex.35):**\nProve that an edge $e$ in a connected graph $G$ is a **cut-edge** (bridge) if and only if $e$ is **not** contained in any cycle of $G$.\n",
+        "solution": "\n**Proof:**\n1. **$(\\implies)$:** Assume $e=(u,v)$ is a bridge. If $e$ were in a cycle, removing $e$ would not disconnect $u$ from $v$ (we could go the 'long way' around the cycle). This contradicts the definition of a bridge. Thus, $e$ is not in a cycle.\n2. **$(\\impliedby)$:** Assume $e=(u,v)$ is NOT in any cycle. This means $e$ is the *only* path between $u$ and $v$. (If there were another path, $e$ plus that path would form a cycle).\n3. Since $e$ is the unique path, removing it disconnects $u$ and $v$.\n4. Thus, $e$ is a cut-edge.\n"
+    },
+    {
+        "id": 70,
+        "lesson": "IE455",
+        "topic": "Network Flows (Min-Cut)",
+        "question": "\n**Task:**\nFind the value of the Min-Cut in the following network:\n* Vertices: $s, a, b, t$.\n* Edges (Capacity): $(s,a): 10$, $(s,b): 5$, $(a,b): 15$, $(a,t): 3$, $(b,t): 8$.\n",
+        "solution": "\n**Calculation:**\nWe check possible cuts $(X, \\bar{X})$.\n1. Cut $\\{s\\}$ vs $\\{a,b,t\\}$: Cap = $10+5 = 15$.\n2. Cut $\\{s,a,b\\}$ vs $\\{t\\}$: Cap = $3+8 = 11$.\n3. Cut $\\{s,b\\}$ vs $\\{a,t\\}$: Cap $(s,a) + (b,t) = 10 + 8 = 18$.\n4. Cut $\\{s,a\\}$ vs $\\{b,t\\}$: Cap $(s,b) + (a,b) + (a,t)$? No, edges going OUT of set $\\{s,a\\}$.\n   * Out-edges: $(s,b)$ [cap 5], $(a,b)$ [cap 15], $(a,t)$ [cap 3]. Sum = $5+15+3 = 23$.\n   *(Note: $(a,b)$ goes from set $X$ to $\\bar{X}$ if $b$ is in $\\bar{X}$)*.\n\n**Comparing:** 15, 11, 18, 23.\n**Minimum Capacity:** 11.\n**Answer:** 11.\n"
+    },
+    {
+        "id": 71,
+        "lesson": "IE455",
+        "topic": "Graph Theory (Forests)",
+        "question": "\n**Problem:**\nA forest consists of $k$ connected components and has $n$ vertices. Derivatively, how many edges does it have?\n",
+        "solution": "\n**Answer:** $n - k$.\n\n**Derivation:**\n1. Let the components be trees $T_1, T_2, \\dots, T_k$.\n2. Let $T_i$ have $n_i$ vertices. We know $\\sum n_i = n$.\n3. A tree with $n_i$ vertices has exactly $n_i - 1$ edges.\n4. Total edges $E = \\sum (n_i - 1)$.\n5. $E = (n_1 - 1) + (n_2 - 1) + \\dots + (n_k - 1)$.\n6. $E = (n_1 + n_2 + \\dots + n_k) - (1 + 1 + \\dots + 1)$.\n7. $E = n - k$.\n"
     }
 ]
