@@ -2,6 +2,18 @@ import streamlit as st
 import json
 import os
 st.set_page_config(page_title="IE Exam Prep", layout="centered", page_icon="🎓")
+
+
+meta_tags = """
+<head>
+    <meta property="og:title" content="IE Exam Prep" />
+    <meta property="og:image" content="YOUR_IMAGE_URL_HERE" />
+    <meta property="og:type" content="website" />
+</head>
+"""
+components.html(meta_tags, height=0)
+
+
 # --- Configuration ---
 FILE_NAME = "questions.json"
 
