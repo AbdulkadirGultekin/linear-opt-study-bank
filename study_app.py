@@ -34,7 +34,7 @@ st.markdown("""
         border-radius: 12px;
         border: 1px solid #4a4a4a;
         box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        margin-top: 20px;
+        margin-top: 10px;
         margin-bottom: 25px;
     }
     
@@ -70,12 +70,12 @@ st.markdown("""
         color: #d4edda !important;
     }
 
-    /* Buttons */
+    /* Buttons - Uniform Look */
     .stButton button {
         border-radius: 8px;
         font-weight: 600;
         height: 3rem;
-        width: 100%; /* Force buttons to fill column */
+        width: 100% !important; /* Forces full width alignment */
     }
 </style>
 """, unsafe_allow_html=True)
@@ -114,12 +114,14 @@ st.title("🎓 Operations Research Prep")
 st.progress((st.session_state.current_index + 1) / len(questions))
 st.caption(f"Question {st.session_state.current_index + 1} of {len(questions)}")
 
-# --- CONTROLS (Moved to TOP to fix layout shift) ---
+# --- CONTROLS (Balanced Layout) ---
 st.markdown("###") # Spacer
-col1, col2, col3 = st.columns([1, 2, 1])
+
+# Using 3 equal columns creates a perfectly centered, symmetrical toolbar
+col1, col2, col3 = st.columns(3)
 
 with col1:
-    if st.button("⬅️ Previous"):
+    if st.button("⬅️ Previous", use_container_width=True):
         prev_question()
         st.rerun()
 
@@ -128,12 +130,12 @@ with col2:
     btn_text = "🙈 Hide Solution" if st.session_state.show_solution else "👁️ Reveal Solution"
     btn_type = "primary" if not st.session_state.show_solution else "secondary"
     
-    if st.button(btn_text, type=btn_type):
+    if st.button(btn_text, type=btn_type, use_container_width=True):
         toggle_solution()
         st.rerun()
 
 with col3:
-    if st.button("Next ➡️"):
+    if st.button("Next ➡️", use_container_width=True):
         next_question()
         st.rerun()
 
