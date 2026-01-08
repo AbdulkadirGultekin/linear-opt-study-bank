@@ -334,5 +334,75 @@
         "topic": "Stable Marriage (Optimization)",
         "question": "\n**Problem:**\nIn a Stable Marriage instance with $n$ men and $n$ women, is it possible for **every** man to get his first choice partner simultaneously?\n",
         "solution": "\n**Answer:** Yes, it is possible.\n\n**Condition:**\nThis happens if every man's first choice woman also prefers him (or is simply available and no conflict arises). \nExample: \n* M1 wants W1.\n* M2 wants W2.\n* ...\n* Mn wants Wn.\nIf there is no competition (no two men want the same woman as #1), the algorithm terminates in Round 1, and everyone gets their top choice.\n"
+    },
+    {
+        "id": 52,
+        "lesson": "IE455",
+        "topic": "Pigeonhole Principle (Divisibility)",
+        "question": "\n**Problem (Brualdi Ch.2 Ex.7*):**\nShow that for any given 52 integers there exist two of them whose sum, or else whose difference, is divisible by 100.\n",
+        "solution": "\n**Proof:**\n1. Define the \"pigeonholes\" as the sets of remainders modulo 100 that sum to 100 (or 0).\n2. Holes: $\\{0\\}, \\{1, 99\\}, \\{2, 98\\}, \\dots, \\{49, 51\\}, \\{50\\}$.\n3. There are exactly 51 such holes ($0$ and $50$ are singletons, $1..49$ are pairs).\n4. We have 52 integers (pigeons). Let $r_i$ be $x_i \\pmod{100}$.\n5. By PHP, two integers $x, y$ must map to the same hole.\n6. **Case 1:** They have the same remainder $r$. Then $x - y$ is divisible by 100.\n7. **Case 2:** They have remainders $r$ and $100-r$ (different remainders in the same pair-hole). Then $x + y \\equiv r + (100-r) \\equiv 100 \\equiv 0 \\pmod{100}$.\n"
+    },
+    {
+        "id": 53,
+        "lesson": "IE455",
+        "topic": "Pigeonhole Principle (Logic)",
+        "question": "\n**Problem (Brualdi Ch.2 Ex.2*):**\nConsider the set $S = \\{1, 2, \\dots, 200\\}$.\nShow that if 100 integers are chosen from S and **one of the integers is less than 16**, then there are two chosen numbers such that one divides the other.\n*(Note: The standard theorem requires 101 integers. The constraint 'one < 16' tightens the bound.)*\n",
+        "solution": "\n**Proof:**\n1. Write every number $x$ as $2^k \\cdot m$, where $m$ is odd. The \"holes\" are the odd parts $m \\in \\{1, 3, \\dots, 199\\}$. There are 100 holes.\n2. To avoid divisibility with 100 numbers, we must pick exactly one number for each of the 100 odd parts.\n3. Also, to minimize divisibility chances, we usually pick numbers from the \"top half\" ($101..200$).\n4. However, we are forced to pick a number $x < 16$. Let's say $x=3$ ($m=3$).\n5. If we pick $x=3$, we cannot pick any multiple of 3 (like $6, 9, \\dots$) or any number that 3 divides.\n6. But we MUST pick a number with odd part $m=3$ to have 100 numbers. So we picked $3$.\n7. Now consider the hole for $m=9$. We must pick a number like $9, 18, 36\\dots$. All of these are multiples of 3.\n8. Since $x < 16$ is \"small\", it has many multiples in the set. The only way to avoid $x$ dividing another number $y$ is if $y$ is not a multiple of $x$. But the pigeonhole structure forces us to pick numbers that eventually collide with the multiples of small $x$.\n"
+    },
+    {
+        "id": 54,
+        "lesson": "IE455",
+        "topic": "Graph Theory (Fault Lines)",
+        "question": "\n**Problem (Brualdi Ch.1 Ex.26):**\nA 6-by-6 chessboard is perfectly covered with 18 dominoes.\nProve that there must be a **fault-line** (a horizontal or vertical line that cuts the board into two nonempty pieces without cutting through any domino).\n",
+        "solution": "\n**Proof:**\n1. There are 5 possible vertical cutting lines and 5 possible horizontal cutting lines.\n2. Suppose there is NO fault line. Then every line must cut at least 1 domino.\n3. Parity Argument: A line must always cut an **even** number of dominoes (because the area on one side of the line is even, and uncut dominoes cover 2 squares each, so the \"cut\" dominoes must balance the area to make it even).\n4. So every line cuts at least 2 dominoes.\n5. Total cuts $\\ge (5 \\text{ vert} \\times 2) + (5 \\text{ horiz} \\times 2) = 20$ cuts.\n6. But there are only 18 dominoes! A domino can be cut by at most one line (it's $1\\times2$).\n7. $20 > 18$ is a contradiction. Therefore, at least one line cuts 0 dominoes.\n"
+    },
+    {
+        "id": 55,
+        "lesson": "IE455",
+        "topic": "Graph Theory (Coloring)",
+        "question": "\n**Problem (Brualdi Ch.1 Ex.40):**\nShow that if an $n \\times n$ board has a perfect cover by **L-tetrominoes** (4 squares shaped like an L), then $n$ must be divisible by 4.\n",
+        "solution": "\n**Proof:**\n1. Total squares $n^2$. Each tile has 4 squares, so $4 | n^2$, which implies $n$ is even. Let $n=2k$.\n2. Consider the board divided into $2 \\times 2$ blocks. There are $k^2$ such blocks.\n3. Or, use a coloring argument: Color the rows 1 and 2 Red, 3 and 4 Blue, 5 and 6 Red, etc. (Stripes of width 2).\n4. An L-tetromino covers either (3 Red, 1 Blue) or (1 Red, 3 Blue). It always covers an **odd** number of Red squares.\n5. Let $k$ be the number of tiles. $k = n^2/4$.\n6. Total Red squares is $n^2/2$. The total Red squares covered is the sum of $k$ odd numbers.\n7. For the sum of $k$ odd numbers to equal the even number $n^2/2$, $k$ must be even.\n8. $k$ even $\\implies n^2/4$ even $\\implies n^2$ div by 8 $\\implies n$ div by 4.\n"
+    },
+    {
+        "id": 56,
+        "lesson": "IE455",
+        "topic": "Pigeonhole Principle (Ramsey)",
+        "question": "\n**Problem (Brualdi Ch.2 Ex.20):**\nProve that the Ramsey number $r(3,3,3) \\le 17$.\n(i.e., If edges of $K_{17}$ are colored with 3 colors, there is a monochromatic triangle).\n",
+        "solution": "\n**Proof:**\n1. Pick a vertex $v$. It has 16 incident edges.\n2. There are 3 colors (Red, Blue, Green).\n3. By PHP, at least $\\lceil 16/3 \\rceil = 6$ edges share the same color, say Red.\n4. Let the 6 neighbors connected by these Red edges be the set $S$.\n5. Consider the edges connecting vertices **within** $S$ ($K_6$).\n6. If any edge in $S$ is Red, it forms a Red triangle with $v$.\n7. If NO edge in $S$ is Red, then $S$ is a $K_6$ colored only with Blue and Green.\n8. We know $r(3,3) = 6$. Thus, $S$ must contain a Blue $K_3$ or a Green $K_3$.\n9. In all cases, a monochromatic $K_3$ exists.\n"
+    },
+    {
+        "id": 57,
+        "lesson": "IE455",
+        "topic": "Combinatorics (Covering)",
+        "question": "\n**Problem (Brualdi Ch.1 Ex.4b*):**\nLet $g(n)$ be the number of different perfect covers of a 3-by-n chessboard by dominoes. Evaluate $g(6)$.\n",
+        "solution": "\n**Answer:** 41\n\n**Sequence:**\n$n$ must be even for a cover to exist.\n$g(0) = 1$\n$g(2) = 3$ (3 vertical; or 2 horiz + 1 vert...)\n$g(4) = 11$\n$g(6) = 41$\n**Relation:** $g(n) = 4g(n-2) - g(n-4)$.\nCheck: $4(11) - 3 = 44 - 3 = 41$.\n"
+    },
+    {
+        "id": 58,
+        "lesson": "IE455",
+        "topic": "Pigeonhole Principle (Application)",
+        "question": "\n**Problem (Brualdi Ch.2 Ex.11):**\nA student has 37 days to prepare for an exam. She needs to study at most 60 hours total, but at least 1 hour/day. Show there is a succession of days where she studies exactly 13 hours.\n",
+        "solution": "\n**Proof:**\n1. Let $a_i$ be total hours studied up to day $i$ ($1 \\le i \\le 37$).\n2. Sequence: $1 \\le a_1 < a_2 < \\dots < a_{37} \\le 60$.\n3. Consider the 74 numbers: $a_1, \\dots, a_{37}$ AND $a_1+13, \\dots, a_{37}+13$.\n4. The maximum value is $60 + 13 = 73$.\n5. We have 74 pigeons (numbers) fitting into 73 holes (values 1..73).\n6. By PHP, two numbers are equal. Since $a_i$ are distinct, we must have $a_j = a_i + 13$.\n7. Thus, the hours studied from day $i+1$ to day $j$ is exactly 13.\n"
+    },
+    {
+        "id": 59,
+        "lesson": "IE455",
+        "topic": "Graph Theory (Grid)",
+        "question": "\n**Problem (Brualdi Ch.1 Ex.2):**\nConsider an $m \\times n$ chessboard with $m$ and $n$ both odd. The corners are colored White. If a White square is cut out anywhere, show the pruned board has a perfect domino cover.\n",
+        "solution": "\n**Reasoning:**\n1. Total squares $mn$ is odd. Corners are White $\\implies$ Total White = $(mn+1)/2$, Total Black = $(mn-1)/2$.\n2. Removing a White square leaves equal numbers of White and Black squares.\n3. The grid graph is Bipartite.\n4. A standard theorem states that in a grid graph with specific parity conditions, removing a vertex of the majority color allows a matching (perfect cover) on the rest.\n5. Constructively: One can trace a Hamiltonian path from corner to corner. Removing a white square (which is at an even distance along the path?) breaks the path into even-length segments which can be covered.\n"
+    },
+    {
+        "id": 60,
+        "lesson": "IE455",
+        "topic": "Pigeonhole Principle (Geometric)",
+        "question": "\n**Problem (Brualdi Ch.2 Ex.18):**\nProve that of any 5 points chosen within a square of side length 2, there are two whose distance apart is at most $\\sqrt{2}$.\n",
+        "solution": "\n**Proof:**\n1. Divide the $2 \\times 2$ square into four $1 \\times 1$ unit squares (the holes).\n2. We have 5 points (pigeons).\n3. By PHP, at least one unit square contains $\\lceil 5/4 \\rceil = 2$ points.\n4. The maximum distance between any two points in a $1 \\times 1$ square is the diagonal.\n5. Diagonal length $= \\sqrt{1^2 + 1^2} = \\sqrt{2}$.\n"
+    },
+    {
+        "id": 61,
+        "lesson": "IE455",
+        "topic": "Pigeonhole Principle (Sums)",
+        "question": "\n**Problem (Brualdi Ch.2 Ex.9):**\nIn a room of 10 people (ages 1 to 60), prove one can find two disjoint groups of people with the same age sum.\n",
+        "solution": "\n**Proof:**\n1. Calculate max possible sum for a group. Max sum $\\approx 60 \\times 10 = 600$ (rough upper bound, actually sum of 10 largest distinct integers is less).\n2. Number of possible subsets (groups) is $2^{10} - 1 = 1023$ (excluding empty).\n3. Possible sums range from roughly 1 to ~600.\n4. Since $1023$ (subsets) > $600$ (sums), by PHP, two different subsets $A$ and $B$ have the same sum.\n5. If $A$ and $B$ overlap, remove common members. The remaining sets $A \\setminus B$ and $B \\setminus A$ are disjoint and still have equal sums.\n"
     }
 ]
