@@ -7,13 +7,9 @@ FILE_NAME = "questions.json"
 
 # --- Helper Functions ---
 def load_questions():
-    """
-    Strictly loads from questions.json. 
-    Returns an empty list if file is missing or broken.
-    """
+    """Strictly loads from questions.json."""
     if not os.path.exists(FILE_NAME):
         return []
-    
     with open(FILE_NAME, "r") as f:
         try:
             return json.load(f)
@@ -24,7 +20,7 @@ def load_questions():
 # --- App Layout ---
 st.set_page_config(page_title="OR Exam Prep", layout="centered", page_icon="🎓")
 
-# --- CSS STYLING (Dark Mode Native) ---
+# --- CSS STYLING ---
 st.markdown("""
 <style>
     /* Dark Card Design */
@@ -37,15 +33,11 @@ st.markdown("""
         margin-top: 10px;
         margin-bottom: 25px;
     }
-    
-    /* Text Contrast Enforcement */
     .question-card p, .question-card li, .question-card div, .question-card span, h1, h2, h3 {
         color: #FAFAFA !important;
         font-family: 'Segoe UI', sans-serif;
         line-height: 1.6;
     }
-
-    /* Topic Badge */
     .topic-badge {
         background-color: #0e1117;
         color: #4db8ff !important;
@@ -59,33 +51,61 @@ st.markdown("""
         margin-bottom: 20px;
         border: 1px solid #4db8ff;
     }
-
-    /* Success Box */
     .stSuccess {
         background-color: #1b2e21 !important;
         color: #d4edda !important;
         border: 1px solid #2e5c3b;
     }
-    .stSuccess p, .stSuccess div {
-        color: #d4edda !important;
-    }
-
-    /* Buttons - Uniform Look */
+    .stSuccess p, .stSuccess div { color: #d4edda !important; }
     .stButton button {
         border-radius: 8px;
         font-weight: 600;
         height: 3rem;
-        width: 100% !important; /* Forces full width alignment */
+        width: 100% !important;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# --- Load Data ---
-questions = load_questions()
+# --- LOAD DATA ---
+all_questions = load_questions()
 
-# --- Handle Empty File ---
-if not questions:
-    st.warning("No questions found in `questions.json`. Please add some questions to the file!")
+# --- SIDEBAR: COURSE SELECTION ---
+st.sidebar.title("📚 Select Course")
+course_options = ["IE553 Linear Optimization", "IE455 Combinatorial Analysis"]
+
+# We use a session state to track if the course changed so we can reset index
+if "selected_course" not in st.session_state:
+    st.session_state.selected_course = course_options[0]
+
+# Radio button for selection
+new_course_selection = st.sidebar.radio(
+    "Available Lessons:", 
+    course_options, 
+    index=course_options.index(st.session_state.selected_course)
+)
+
+# Detect Change & Reset
+if new_course_selection != st.session_state.selected_course:
+    st.session_state.selected_course = new_course_selection
+    st.session_state.current_index = 0 # Reset to Q1
+    st.session_state.show_solution = False # Hide solution
+    st.rerun()
+
+# --- FILTERING LOGIC ---
+# Extract the code (IE553 or IE455) from the selection string
+target_code = st.session_state.selected_course.split()[0]
+
+# Filter list. Default to "IE553" if 'lesson' key is missing.
+filtered_questions = [
+    q for q in all_questions 
+    if q.get("lesson", "IE553") == target_code
+]
+
+# --- MAIN CONTENT ---
+st.title(f"🎓 {target_code} Prep")
+
+if not filtered_questions:
+    st.info(f"No questions found for **{target_code}**. Add some to `questions.json` with `\"lesson\": \"{target_code}\"`!")
     st.stop()
 
 # --- State Management ---
@@ -94,8 +114,15 @@ if 'current_index' not in st.session_state:
 if 'show_solution' not in st.session_state:
     st.session_state.show_solution = False
 
+# Ensure index is valid (safety check)
+if st.session_state.current_index >= len(filtered_questions):
+    st.session_state.current_index = 0
+
+current_q = filtered_questions[st.session_state.current_index]
+
+# --- Helper Functions ---
 def next_question():
-    if st.session_state.current_index < len(questions) - 1:
+    if st.session_state.current_index < len(filtered_questions) - 1:
         st.session_state.current_index += 1
         st.session_state.show_solution = False
 
@@ -107,17 +134,12 @@ def prev_question():
 def toggle_solution():
     st.session_state.show_solution = not st.session_state.show_solution
 
-current_q = questions[st.session_state.current_index]
+# --- Progress Bar ---
+st.progress((st.session_state.current_index + 1) / len(filtered_questions))
+st.caption(f"Question {st.session_state.current_index + 1} of {len(filtered_questions)}")
 
-# --- Header ---
-st.title("🎓 Operations Research Prep")
-st.progress((st.session_state.current_index + 1) / len(questions))
-st.caption(f"Question {st.session_state.current_index + 1} of {len(questions)}")
-
-# --- CONTROLS (Balanced Layout) ---
-st.markdown("###") # Spacer
-
-# Using 3 equal columns creates a perfectly centered, symmetrical toolbar
+# --- CONTROLS ---
+st.markdown("###")
 col1, col2, col3 = st.columns(3)
 
 with col1:
@@ -126,10 +148,8 @@ with col1:
         st.rerun()
 
 with col2:
-    # Toggle button state/text
     btn_text = "🙈 Hide Solution" if st.session_state.show_solution else "👁️ Reveal Solution"
     btn_type = "primary" if not st.session_state.show_solution else "secondary"
-    
     if st.button(btn_text, type=btn_type, use_container_width=True):
         toggle_solution()
         st.rerun()
@@ -139,7 +159,7 @@ with col3:
         next_question()
         st.rerun()
 
-# --- The Flashcard (Content) ---
+# --- CARD ---
 with st.container():
     st.markdown(f"""<div class="question-card">
 <div class="topic-badge">{current_q.get('topic', 'General')}</div>
@@ -148,7 +168,7 @@ with st.container():
 </div>
 </div>""", unsafe_allow_html=True)
 
-# --- Solution Reveal (Appears Below) ---
+# --- SOLUTION ---
 if st.session_state.show_solution:
     st.markdown("---")
     st.success(current_q["solution"])
