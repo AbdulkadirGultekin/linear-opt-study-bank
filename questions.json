@@ -810,5 +810,75 @@
         "topic": "Revised Simplex (Eta Matrix)",
         "question": "\n**Problem:**\nCurrent Basis Inverse $B^{-1}_{old} = I$ (Identity).\nEntering variable $x_2$ has column $A_2 = [1, 2]^T$.\nLeaving variable is the 2nd basic variable (associated with 2nd column of B).\n\n**Task:**\nConstruct the Eta Matrix ($E$) required to update the basis inverse.\n",
         "solution": "\n**Formula:**\nThe Eta matrix is Identity, but the $r$-th column (leaving position) is replaced by the eta vector $\\eta$.\n$\\eta = \\begin{bmatrix} -d_1/d_r \\\\ 1/d_r \\\\ -d_3/d_r \\end{bmatrix}$, where $d = B^{-1} A_{enter}$.\n\n**Calculation:**\nSince $B^{-1}=I$, $d = A_2 = [1, 2]^T$.\nLeaving index $r=2$. Pivot element $d_2 = 2$.\n$\\eta_1 = -d_1 / d_2 = -1/2 = -0.5$.\n$\\eta_2 = 1 / d_2 = 1/2 = 0.5$.\n\n**Answer:**\n$E = \\begin{bmatrix} 1 & -0.5 \\\\ 0 & 0.5 \\end{bmatrix}$\n*(Column 1 is Identity column, Column 2 is $\\eta$).*\n"
+    },
+    {
+        "id": 120,
+        "lesson": "IE553",
+        "topic": "Dual Simplex (Full Solve)",
+        "question": "\n**Solve using Dual Simplex:**\nMinimize $Z = 2x_1 + x_2$\nSubject to:\n1) $3x_1 + x_2 \\ge 3$\n2) $4x_1 + 3x_2 \\ge 6$\n3) $x_1 + 2x_2 \\ge 3$\n$x_1, x_2 \\ge 0$\n\n*Hint: Start with the all-slack tableau (which will be dual feasible but primal infeasible).*\n",
+        "solution": "\n**Optimal Solution:**\n$x_1 = 0.6$ (3/5)\n$x_2 = 1.2$ (6/5)\n$Z^* = 2.4$\n\n**Process:**\n1. Convert to $\\le$ for standard dual simplex tableau: $-3x_1 - x_2 \\le -3$, etc.\n2. Initial Basis: Slacks $s_1=-3, s_2=-6, s_3=-3$.\n3. Pivot 1: $s_2$ leaves (most negative). Ratio test on Row 2. $x_1$ or $x_2$ enters.\n4. Iterate until all RHS $\\ge 0$.\n"
+    },
+    {
+        "id": 121,
+        "lesson": "IE553",
+        "topic": "Big M Method (Full Solve)",
+        "question": "\n**Solve using Big M Method:**\nMaximize $Z = x_1 + 5x_2$\nSubject to:\n1) $x_1 + x_2 \\le 10$\n2) $2x_1 + 5x_2 \\ge 20$\n$x_1, x_2 \\ge 0$\n\n*Hint: Constraint 2 requires an artificial variable.*\n",
+        "solution": "\n**Optimal Solution:**\n$x_1 = 0$\n$x_2 = 10$\n$Z^* = 50$\n\n**Process:**\n1. Add slack $s_1$ to (1).\n2. Subtract surplus $e_2$ and add artificial $a_2$ to (2).\n3. Objective: Max $Z = x_1 + 5x_2 - M a_2$.\n4. Substitute $a_2$ out of Row 0 before starting.\n5. Pivot to remove $a_2$. Continue with regular simplex.\n"
+    },
+    {
+        "id": 122,
+        "lesson": "IE553",
+        "topic": "Two-Phase Method (Full Solve)",
+        "question": "\n**Solve using Two-Phase Method:**\nMinimize $Z = 2x_1 + 3x_2$\nSubject to:\n1) $x_1 + x_2 \\ge 5$\n2) $x_1 + 2x_2 \\ge 6$\n$x_1, x_2 \\ge 0$\n",
+        "solution": "\n**Optimal Solution:**\n$x_1 = 4$\n$x_2 = 1$\n$Z^* = 11$\n\n**Phase 1:**\nMin $W = a_1 + a_2$. Optimal $W^*=0$ reached at point $(4,1)$.\n**Phase 2:**\nDrop artificials. Restore original objective $Z = 2x_1 + 3x_2$. The point $(4,1)$ is already optimal for Phase 2.\n"
+    },
+    {
+        "id": 123,
+        "lesson": "IE553",
+        "topic": "Dantzig-Wolfe (Full Iteration)",
+        "question": "\n**Perform 1 Full Iteration of Dantzig-Wolfe:**\nMaximize $Z = 4x_1 + x_2 + 5x_3$\n**Coupling:** $x_1 + x_3 \\le 10$\n**Block 1:** $x_1 + x_2 \\le 4, x_1, x_2 \\ge 0$\n**Block 2:** $2x_3 \\le 12, x_3 \\ge 0$\n\n**Current State:** Initial Master Problem has only the zero-solution columns ($v_{1}^0 = [0,0], v_{2}^0 = [0]$).\nDual variables: $\\pi = 0, \\alpha_1 = 0, \\alpha_2 = 0$.\n",
+        "solution": "\n**Subproblem 1 (Block 1):**\nMax $(4 - 0)x_1 + (1 - 0)x_2$ s.t. $x_1+x_2 \\le 4$.\nOptimum: $x_1=4, x_2=0$ (or $0,4$). Value $16$. Proposal $v_1^1 = [4,0]$.\n\n**Subproblem 2 (Block 2):**\nMax $(5 - 0)x_3$ s.t. $2x_3 \\le 12 \\implies x_3 \\le 6$.\nOptimum: $x_3=6$. Value $30$. Proposal $v_2^1 = [6]$.\n\n**New Master Columns:**\nCol 1: Cost=16, Coupling usage ($x_1+x_3$) = $4+0=4$. Convexity 1.\nCol 2: Cost=30, Coupling usage ($0+6$) = $6$. Convexity 1.\n"
+    },
+    {
+        "id": 124,
+        "lesson": "IE553",
+        "topic": "Benders Decomposition (Full Iteration)",
+        "question": "\n**Problem:** Minimize $Z = 5y + 3x$\nSubject to: $y + x \\ge 4$, $y \\ge 2, x \\ge 0$.\n$y$ is the complicating variable.\n\n**Task:**\n1. Solve Master with no cuts (assume Min $5y$ s.t. $y \\ge 2$). Get $\\bar{y}$.\n2. Formulate Subproblem for this $\\bar{y}$.\n3. Solve Subproblem Dual.\n4. Generate the Benders Optimality Cut.\n",
+        "solution": "\n**Iteration 1:**\n1. **Master:** Min $5y$ s.t. $y \\ge 2$. Opt: $\\bar{y} = 2$. Master Obj $LB = 10$.\n2. **Primal Sub:** Min $3x$ s.t. $x \\ge 4 - 2 = 2$. Opt: $x=2$. Actual Total Cost = $5(2) + 3(2) = 16$.\n3. **Dual Sub:** Max $(4 - \\bar{y})u$ s.t. $u \\le 3$. Opt: $u^* = 3$.\n4. **Cut:** $z_{sub} \\ge (4 - y)(3) \\implies z_{sub} \\ge 12 - 3y$.\n   Full Cut: $Z_{total} \\ge 5y + (12 - 3y) = 2y + 12$.\n   *Check: For $y=2$, $2(2)+12 = 16$. Matches actual cost.*\n"
+    },
+    {
+        "id": 125,
+        "lesson": "IE553",
+        "topic": "Dual Simplex (Re-Optimization)",
+        "question": "\n**Scenario:**\nYou have the optimal tableau for: Max $Z = 3x_1 + 4x_2$ s.t. $x_1 \\le 4, x_2 \\le 8$.\nOptimal: $x_1=4, x_2=8, Z=44$.\n\n**New Constraint Added:** $x_1 + x_2 \\le 10$.\n\n**Task:**\nCheck feasibility. If violated, perform the Dual Simplex pivot to find the new optimal solution.\n",
+        "solution": "\n**1. Check:** $4 + 8 = 12 \\not\\le 10$. Violated.\n**2. New Row:** Slack $s_{new} = 10 - (x_1 + x_2) = 10 - 12 = -2$.\nRow: $s_{new} = -2$ (plus non-basic terms).\n**3. Pivot:** $s_{new}$ leaves. You must express $x_1, x_2$ in terms of slacks from original tableau to find entering variable.\n**4. Result:** New Opt is intersection of $x_2=8$ and $x_1+x_2=10 \\implies x_1=2$. Or $x_1=4, x_2=6$.\nCompare Z: $(2,8) \\to 6+32=38$. $(4,6) \\to 12+24=36$.\n**Final:** $x_1=2, x_2=8, Z=38$.\n"
+    },
+    {
+        "id": 126,
+        "lesson": "IE553",
+        "topic": "Big M (Infeasible Trap)",
+        "question": "\n**Solve using Big M:**\nMaximize $Z = 2x_1 + 2x_2$\nSubject to:\n1) $x_1 + x_2 \\le 2$\n2) $x_1 + x_2 \\ge 5$\n$x_1, x_2 \\ge 0$\n\n*Task: Show how the tableau indicates infeasibility.*\n",
+        "solution": "\n**Result:** Infeasible.\n\n**Tableau Indication:**\nOptimality condition will be satisfied (no attractive columns), but the Artificial Variable $a_2$ will remain in the basis with a strictly positive value ($a_2 = 3$ or similar).\nSince $a_2 > 0$ contributes $-M(3)$ to the objective, $Z \\to -\\infty$ (for Max problem with penalty), indicating the constraints physically contradict.\n"
+    },
+    {
+        "id": 127,
+        "lesson": "IE553",
+        "topic": "Simplex (Unbounded)",
+        "question": "\n**Solve (Detect Unboundedness):**\nMaximize $Z = 4x_1 + 5x_2$\nSubject to:\n1) $x_1 - x_2 \\le 10$\n2) $2x_1 - 2x_2 \\le 40$\n$x_1, x_2 \\ge 0$\n\n*Task: Perform simplex until you identify the unbounded condition.*\n",
+        "solution": "\n**Condition Found:**\nIn the column for $x_2$, you will find a positive reduced cost (indicating $x_2$ should increase), but the column entries in the constraints (A matrix) will be negative or zero (e.g., $-1$ and $-2$).\nThis means increasing $x_2$ does not violate any constraints.\n**Conclusion:** Problem is Unbounded ($Z \\to +\\infty$).\n"
+    },
+    {
+        "id": 128,
+        "lesson": "IE553",
+        "topic": "Benders (Integer Subproblem)",
+        "question": "\n**Problem:**\nMaximize $Z = 10y + 2x$\nSubject to:\n1) $2y + x \\le 10$\n2) $x \\le 5$\n$y \\in \\{0, 1\\}$ (Binary).\n\n**Task:**\nSolve using Logic-Based Benders (or simple decomposition).\n1. Try $y=0$. Solve for $x$.\n2. Try $y=1$. Solve for $x$.\n3. Compare.\n",
+        "solution": "\n**Case y=0:**\nMax $2x$ s.t. $x \\le 10, x \\le 5$. Opt $x=5$. $Z = 0 + 10 = 10$.\n\n**Case y=1:**\nMax $10(1) + 2x$ s.t. $2(1) + x \\le 10 \\implies x \\le 8$. Also $x \\le 5$.\nActive constraint $x \\le 5$. Opt $x=5$.\n$Z = 10 + 10 = 20$.\n\n**Optimal:** $y=1, x=5, Z=20$.\n"
+    },
+    {
+        "id": 129,
+        "lesson": "IE553",
+        "topic": "Revised Simplex (Basis Update)",
+        "question": "\n**Problem:**\nConsider the LP: Max $3x_1 + 2x_2$ s.t. $x_1 \\le 4, x_2 \\le 6$.\nCurrent Basis: $B = \\{s_1, x_2\\}$. (Indices 3 and 2).\nConstraint matrix (with slacks): $A = \\begin{bmatrix} 1 & 0 & 1 & 0 \\\\ 0 & 1 & 0 & 1 \\end{bmatrix}$.\n\n**Task:**\n1. Write the Basis Matrix $B$.\n2. Compute $B^{-1}$.\n3. Compute the current Basic Solution $x_B = B^{-1}b$.\n",
+        "solution": "\n**1. Basis Matrix B:**\nCols for $s_1$ and $x_2$.\nCol 3 ($s_1$) = $\\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}$.\nCol 2 ($x_2$) = $\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}$.\n$B = \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix} = I$.\n\n**2. Inverse:** $B^{-1} = I$.\n\n**3. Solution:**\n$x_B = I \\begin{bmatrix} 4 \\\\ 6 \\end{bmatrix} = \\begin{bmatrix} 4 \\\\ 6 \\end{bmatrix}$.\nSo $s_1 = 4, x_2 = 6$. ($x_1=0$).\n"
     }
 ]
